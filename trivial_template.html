@@ -103,6 +103,8 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
     <div class="pcount" id="pcount"></div>
     <div class="names" id="names"></div>
     <button class="play" id="go">Lancer la partie 🎲</button>
+    <button class="play" id="goMay" style="margin-top:9px;background:linear-gradient(135deg,#0E7C5A,#12A574);box-shadow:0 5px 0 #0A5A41">🌴 Partie spéciale Mayotte (50 questions)</button>
+    <p style="font-size:11.5px;color:var(--ink2);font-weight:600;margin:8px 0 0">La partie Mayotte garde le plateau et le dé : seules les questions changent.</p>
   </div>
 </section>
 
@@ -138,13 +140,14 @@ const CATS = [
  {id:"div", n:"Divertissements", e:"🎬", c:"#E8456B"},
 ];
 const Q = __QUESTIONS__;
+const QMAY = __QMAY__;
 const PCOL = ["#E8456B","#1E6FD9","#22A06B","#A855F7"];
 const N = 24;                 // cases du plateau
 const CAMB = {0:"geo",4:"his",8:"art",12:"sci",16:"spo",20:"div"};
 
 const $ = s => document.querySelector(s);
 let nbPlayers = 2;
-let G = {players:[], turn:0, phase:"roll", q:null, cat:null, used:new Set(), rolled:false};
+let G = {players:[], turn:0, phase:"roll", q:null, cat:null, used:new Set(), rolled:false, mayotte:false};
 
 /* ---------- setup ---------- */
 function renderSetup(){
@@ -155,20 +158,23 @@ function renderSetup(){
   for(let i=0;i<nbPlayers;i++){const inp=document.createElement("input");
     inp.placeholder="Joueur "+(i+1); inp.maxLength=12; nm.appendChild(inp);}
 }
-$("#go").onclick=()=>{
+function startGame(mayotte){
   const ins=[...document.querySelectorAll("#names input")];
   G.players=ins.map((x,i)=>({name:x.value.trim()||"Joueur "+(i+1),parts:[],pos:0,color:PCOL[i]}));
-  G.turn=0; G.phase="roll"; G.q=null; G.used=new Set();
+  G.turn=0; G.phase="roll"; G.q=null; G.used=new Set(); G.mayotte=mayotte;
   show("v-game"); draw(); renderSide(); $("#qzone").innerHTML="";
-};
+}
+$("#go").onclick=()=>startGame(false);
+$("#goMay").onclick=()=>startGame(true);
 
 /* ---------- helpers ---------- */
 function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id===id));window.scrollTo({top:0,behavior:"instant"});}
 function catOf(pos){ return CAMB[pos] || CATS[pos % 6].id; }
 function isCamb(pos){ return !!CAMB[pos]; }
 function pickQ(cat){
-  let pool = Q.filter(q=>q.c===cat && !G.used.has(q));
-  if(pool.length===0){ Q.filter(q=>q.c===cat).forEach(q=>G.used.delete(q)); pool = Q.filter(q=>q.c===cat); }
+  const SRC = G.mayotte ? QMAY : Q;
+  let pool = SRC.filter(q=>q.c===cat && !G.used.has(q));
+  if(pool.length===0){ SRC.filter(q=>q.c===cat).forEach(q=>G.used.delete(q)); pool = SRC.filter(q=>q.c===cat); }
   const q = pool[Math.floor(Math.random()*pool.length)];
   G.used.add(q); return q;
 }
