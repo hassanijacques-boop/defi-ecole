@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Défi École — réviser en jouant, du CP au CM2</title>
+<meta name="description" content="Des défis de révision pour l'école primaire : CP, CE1, CE2, CM1, CM2. Toutes les matières, des étoiles, des badges et des points à gagner.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF7EC; --card:#FFFFFF; --ink:#1B2440; --ink2:#5D6785; --line:#EADFCB;
+  --gold:#F5A623; --green:#22C55E; --red:#EF4444; --violet:#7C4DFF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;
+  background-image:radial-gradient(#00000008 1.2px, transparent 1.2px);background-size:24px 24px;line-height:1.5;
+  -webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:none}
+a{color:inherit}
+
+/* ---------- TOP ---------- */
+.top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(255,247,236,.94);
+  backdrop-filter:blur(10px);border-bottom:3px solid var(--ink)}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.03em}
+.logo .mk{width:34px;height:34px;border-radius:10px;background:var(--ink);color:#FFD166;display:grid;place-items:center;font-size:18px;box-shadow:2px 2px 0 var(--gold)}
+.logo small{display:block;font-family:Inter,sans-serif;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+.spacer{flex:1}
+.hud{display:flex;gap:7px;align-items:center}
+.chip{display:flex;align-items:center;gap:5px;background:var(--card);border:2px solid var(--ink);border-radius:999px;padding:4px 10px;
+  font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink);white-space:nowrap}
+.chip small{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+
+/* ---------- LAYOUT ---------- */
+main{max-width:1000px;margin:0 auto;padding:18px 16px 60px}
+.view{display:none}
+.view.on{display:block}
+
+/* ---------- ACCUEIL ---------- */
+.hello{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin:6px 0 18px}
+.avatar{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;font-size:32px;background:#FFE7BE;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.hello .who{flex:1;min-width:180px}
+.hello h1{font-family:'Bricolage Grotesque',sans-serif;font-size:23px;margin:0;letter-spacing:-.03em;line-height:1.1}
+.hello p{margin:3px 0 0;color:var(--ink2);font-size:13px;font-weight:600}
+.xpbar{height:14px;border:3px solid var(--ink);border-radius:99px;background:#fff;overflow:hidden;margin-top:10px;box-shadow:2px 2px 0 var(--ink)}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,#FBBF24,#F59E0B);width:0;transition:width .6s cubic-bezier(.2,.9,.3,1)}
+
+.sec{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.sec h2{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;margin:0;letter-spacing:-.02em}
+.sec span{font-size:12px;color:var(--ink2);font-weight:600}
+
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.lv{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:10px 6px;text-align:center;box-shadow:3px 3px 0 var(--ink);
+  transition:transform .12s,box-shadow .12s;position:relative;overflow:hidden}
+.lv:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.lv.on{background:var(--c);color:#fff}
+.lv.on .ani{filter:brightness(0) invert(1)}
+.lv .ani{font-size:24px;line-height:1.1}
+.lv b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;letter-spacing:-.02em}
+.lv .st{font-size:10px;font-weight:700;opacity:.75;margin-top:1px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px}
+.dc{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:14px;text-align:left;
+  box-shadow:3px 3px 0 var(--ink);transition:transform .12s,box-shadow .12s;display:flex;flex-direction:column;gap:6px;min-height:112px}
+.dc:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.dc .topline{display:flex;align-items:center;gap:7px}
+.dc .mat{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--c);padding:2px 8px;border-radius:99px}
+.dc h3{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;margin:0;letter-spacing:-.02em;line-height:1.2}
+.dc .stars{margin-top:auto;font-size:16px;letter-spacing:2px;color:#D9CFBF}
+.dc .stars b{color:var(--gold);font-weight:400}
+.dc .go{position:absolute;right:12px;bottom:11px;font-size:12px;font-weight:800;color:var(--ink2)}
+
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:9px}
+.bd{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:9px 6px;text-align:center;opacity:.45;filter:grayscale(1)}
+.bd.won{opacity:1;filter:none;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);background:#FFFBEF}
+.bd .e{font-size:22px;line-height:1.1}
+.bd b{display:block;font-size:10px;margin-top:3px;line-height:1.15;letter-spacing:-.01em}
+
+/* ---------- DÉFI ---------- */
+.deftop{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.back{background:var(--card);border:2px solid var(--ink);border-radius:11px;padding:7px 12px;font-weight:800;font-size:13px;box-shadow:2px 2px 0 var(--ink)}
+.pips{display:flex;gap:5px;margin-left:auto}
+.pips i{width:26px;height:9px;border-radius:99px;background:#E7DCC8;border:2px solid var(--ink)}
+.pips i.ok{background:var(--green)}
+.pips i.ko{background:var(--red)}
+.pips i.cur{background:var(--gold)}
+
+.qcard{background:var(--card);border:3px solid var(--ink);border-radius:22px;padding:22px 20px;box-shadow:5px 5px 0 var(--ink)}
+.qmat{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--c);padding:3px 9px;border-radius:99px;margin-bottom:10px}
+.qtext{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(19px,3.6vw,26px);line-height:1.25;letter-spacing:-.025em;margin:0 0 18px;font-weight:700}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;background:#FFF8E9;border:3px solid var(--ink);border-radius:14px;padding:14px 15px;
+  font-size:16px;font-weight:700;text-align:left;transition:transform .1s,background .15s;box-shadow:3px 3px 0 var(--ink)}
+.opt:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink);background:#FFF3D9}
+.opt .k{width:28px;height:28px;border-radius:9px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800;flex:0 0 auto}
+.opt.ok{background:#DCFCE7;border-color:#15803D}
+.opt.ok .k{background:#15803D}
+.opt.ko{background:#FEE2E2;border-color:#B91C1C}
+.opt.ko .k{background:#B91C1C}
+.opt:disabled{cursor:default}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:14px;font-weight:600;display:none}
+.fb.on{display:block;animation:pop .25s ease}
+.fb.good{background:#DCFCE7;border:2px solid #15803D;color:#14532D}
+.fb.bad{background:#FEE2E2;border:2px solid #B91C1C;color:#7F1D1D}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.next{margin-top:14px;width:100%;padding:15px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:15px;
+  box-shadow:0 5px 0 #0E1428;transition:.12s}
+.next:active{transform:translateY(3px);box-shadow:0 2px 0 #0E1428}
+
+/* ---------- FIN ---------- */
+.result{text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:22px;padding:28px 20px;box-shadow:5px 5px 0 var(--ink)}
+.result .stars{font-size:52px;letter-spacing:6px;color:#E3D8C6;line-height:1}
+.result .stars b{color:var(--gold);font-weight:400;display:inline-block;animation:pop .4s ease}
+.result h2{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;margin:10px 0 0;letter-spacing:-.03em}
+.result p{color:var(--ink2);margin:8px 0 0;font-size:14px;font-weight:600}
+.result .xp{font-family:'Bricolage Grotesque',sans-serif;font-size:32px;color:var(--gold);margin-top:12px}
+.newbadges{margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.nb{background:#FFFBEF;border:3px solid var(--ink);border-radius:14px;padding:10px 14px;box-shadow:3px 3px 0 var(--ink);animation:pop .35s}
+.nb .e{font-size:26px}
+.nb b{display:block;font-size:11px;margin-top:2px}
+.acts{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.btn2{padding:13px 20px;border-radius:13px;font-weight:800;font-size:14px;border:3px solid var(--ink);background:var(--card);box-shadow:3px 3px 0 var(--ink)}
+.btn2.primary{background:var(--gold);color:#3A2600}
+
+/* confettis */
+#conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:90}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+
+footer{text-align:center;color:#8A93A8;font-size:11.5px;padding:24px 16px 40px}
+footer a{font-weight:700;border-bottom:2px solid var(--gold)}
+
+@media(max-width:620px){
+  .logo small{display:none}
+  .levels{grid-template-columns:repeat(5,1fr);gap:6px}
+  .lv{padding:8px 3px;border-radius:13px}
+  .lv .ani{font-size:20px}
+  .lv b{font-size:13px}
+  .lv .st{display:none}
+  .grid{grid-template-columns:1fr 1fr;gap:9px}
+  .dc{min-height:104px;padding:11px}
+  .dc h3{font-size:13px}
+  .qcard{padding:16px 14px;border-radius:18px}
+  .opt{font-size:15px;padding:13px}
+  .hud .chip small{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo"><span class="mk">★</span><span>DÉFI ÉCOLE<small>réviser en jouant</small></span></div>
+  <div class="spacer"></div>
+  <div class="hud">
+    <div class="chip" title="Jours d'affilée">🔥 <span id="hudStreak">0</span></div>
+    <div class="chip" title="Points d'expérience">⚡ <span id="hudXp">0</span></div>
+  </div>
+</div>
+
+<main>
+
+<!-- ================= ACCUEIL ================= -->
+<section class="view on" id="v-home">
+  <div class="hello">
+    <div class="avatar" id="avatar">🐣</div>
+    <div class="who">
+      <h1 id="pseudo">Champion</h1>
+      <p id="plvl">Niveau 1 · Petit explorateur</p>
+      <div class="xpbar"><i id="xpFill"></i></div>
+    </div>
+  </div>
+
+  <div class="sec"><h2>Choisis ton niveau</h2><span id="lvlCount"></span></div>
+  <div class="levels" id="levels"></div>
+
+  <div class="sec"><h2 id="defiTitle">Défis du CP</h2><span id="defiCount"></span></div>
+  <div class="grid" id="defis"></div>
+
+  <div class="sec"><h2>Mes badges</h2><span id="badgeCount"></span></div>
+  <div class="badges" id="badges"></div>
+</section>
+
+<!-- ================= DÉFI ================= -->
+<section class="view" id="v-defi">
+  <div class="deftop">
+    <button class="back" id="quit">← Quitter</button>
+    <div class="pips" id="pips"></div>
+  </div>
+  <div class="qcard" id="qzone"></div>
+</section>
+
+<!-- ================= RÉSULTAT ================= -->
+<section class="view" id="v-end">
+  <div class="result" id="rez"></div>
+</section>
+
+</main>
+
+<footer>
+  Défi École — défis de révision CP → CM2, d'après les programmes de l'école primaire.<br>
+  Progression enregistrée uniquement sur cet appareil · <a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a>
+</footer>
+
+<div id="conf"></div>
+
+<script>
+const NIVEAUX = [{"id":"cp","n":"CP","e":"🐣","c":"#F59E0B","d":"J'apprends à lire et à compter"},{"id":"ce1","n":"CE1","e":"🐥","c":"#22C55E","d":"Je consolide la lecture et le calcul"},{"id":"ce2","n":"CE2","e":"🦊","c":"#3B82F6","d":"Je lis couramment, j'écris seul"},{"id":"cm1","n":"CM1","e":"🦅","c":"#8B5CF6","d":"Je comprends, j'explique"},{"id":"cm2","n":"CM2","e":"🦁","c":"#EF4444","d":"Je maîtrise pour le collège"}];
+const DEFIS = [{"id":"cp-fr","nv":"cp","m":"Français","e":"📖","c":"#E0533D","n":"Les sons et les lettres","qs":[["Quel mot contient le son [ch] ?",["chat","table","lune"],0,"« ch » chante comme dans « chat », « cheval », « niche »."],["Combien de syllabes dans « chocolat » ?",["2","3","4"],1,"cho-co-lat : on frappe trois fois dans ses mains."],["Le son [ou] s'écrit avec quelles lettres ?",["ou","on","oi"],0,"ou : comme dans « loup », « poule », « roue »."],["Dans « le chat », le mot « le » est…",["un article","un nom","un verbe"],0,"« le », « la », « les » sont des articles : ils annoncent le nom."],["Quelle phrase est correctement écrite ?",["Le chat dort.","le chat dort","Le chat dort"],0,"Une phrase commence par une majuscule et finit par un point."]]},{"id":"cp-ma","nv":"cp","m":"Maths","e":"🔢","c":"#23618F","n":"Les nombres jusqu'à 20","qs":[["7 + 5 = ?",["11","12","13"],1,"7 + 5 : on part de 7 et on avance de 5 → 12."],["Quel nombre vient juste après 19 ?",["18","20","21"],1,"Après 19, c'est 20 : deux dizaines."],["2 dizaines, c'est…",["2","12","20"],2,"1 dizaine = 10, donc 2 dizaines = 20."],["15 − 6 = ?",["8","9","10"],1,"De 15 on recule de 6 → 9. On peut vérifier : 9 + 6 = 15."],["Range du plus petit au plus grand : 8, 12, 5",["8, 12, 5","5, 8, 12","12, 8, 5"],1,"On compare : 5 < 8 < 12."]]},{"id":"cp-qm","nv":"cp","m":"Questionner le monde","e":"🌱","c":"#31825A","n":"Le temps qui passe","qs":[["Combien de jours y a-t-il dans une semaine ?",["5","7","10"],1,"Lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche : 7 jours."],["Quel mois vient juste après janvier ?",["février","mars","décembre"],0,"Janvier, février, mars, avril…"],["Combien y a-t-il de saisons ?",["2","3","4"],2,"Printemps, été, automne, hiver : 4 saisons."],["Le matin, au réveil, on prend le…",["petit-déjeuner","déjeuner","dîner"],0,"Petit-déjeuner le matin, déjeuner à midi, dîner le soir."],["Quel jour vient après lundi ?",["mercredi","mardi","dimanche"],1,"Lundi puis mardi, dans l'ordre de la semaine."]]},{"id":"cp-em","nv":"cp","m":"EMC","e":"⚖️","c":"#65489B","n":"Vivre ensemble","qs":[["En classe, pour prendre la parole, je…",["lève la main","crie","me lève sans rien dire"],0,"Lever la main, c'est laisser la parole aux autres aussi."],["Un camarade est seul dans la cour. Je…",["l'invite à jouer","ris de lui","l'ignore"],0,"Inviter quelqu'un, c'est le premier geste contre la solitude."],["Une insulte, c'est…",["interdit","permis","drôle"],0,"Les mots peuvent blesser : insulter, c'est déjà une violence."],["Le respect, c'est…",["écouter l'autre","crier plus fort","se moquer"],0,"Respecter, c'est reconnaître que l'autre compte autant que moi."],["J'ai fait mal à quelqu'un sans le vouloir. Je…",["m'excuse","me cache","ris"],0,"S'excuser répare ; se cacher laisse la blessure ouverte."]]},{"id":"cp-an","nv":"cp","m":"Anglais","e":"🇬🇧","c":"#B93A73","n":"Hello ! Les couleurs","qs":[["« red », c'est…",["rouge","bleu","vert"],0,"red = rouge."],["« blue », c'est…",["jaune","bleu","noir"],1,"blue = bleu, comme le ciel."],["Comment dit-on « bonjour » en anglais ?",["goodbye","hello","please"],1,"hello = bonjour ; goodbye = au revoir."],["« green », c'est…",["vert","rose","gris"],0,"green = vert, comme l'herbe."],["« one, two, … » : comment dit-on trois ?",["four","three","two"],1,"one, two, three, four : 1, 2, 3, 4."]]},{"id":"ce1-fr","nv":"ce1","m":"Français","e":"📖","c":"#E0533D","n":"Le verbe et le temps","qs":[["Dans « Le chien aboie », quel est le verbe ?",["le chien","aboie","le"],1,"Le verbe dit ce que fait le sujet : ici, il aboie."],["« Demain, je partirai. » À quel temps est ce verbe ?",["passé","présent","futur"],2,"« Demain » + « partirai » : on parle de ce qui n'est pas encore arrivé."],["Le pluriel de « cheval » est…",["chevals","chevaux","chevaus"],1,"Les mots en -al font souvent -aux : cheval → chevaux."],["Le féminin de « acteur » est…",["acteuse","actrice","acteure"],1,"acteur → actrice, comme directeur → directrice."],["Quelle phrase est au présent ?",["Je mange.","J'ai mangé.","Je mangerai."],0,"« Je mange » : c'est maintenant."]]},{"id":"ce1-ma","nv":"ce1","m":"Maths","e":"🔢","c":"#23618F","n":"Calcul et mesures","qs":[["45 + 27 = ?",["62","72","82"],1,"5 + 7 = 12 (je pose 2, je retiens 1) ; 4 + 2 + 1 = 7 → 72."],["3 × 4 = ?",["7","12","34"],1,"3 × 4, c'est 3 + 3 + 3 + 3 = 12."],["100 − 36 = ?",["64","74","66"],0,"De 100 on retire 36 : 100 − 30 = 70, puis − 6 = 64."],["La moitié de 48, c'est…",["14","24","28"],1,"La moitié, c'est diviser par 2 : 48 ÷ 2 = 24."],["1 mètre, c'est combien de centimètres ?",["10","100","1000"],1,"1 m = 100 cm ; 1 cm = 10 mm."]]},{"id":"ce1-qm","nv":"ce1","m":"Questionner le monde","e":"🌱","c":"#31825A","n":"Le vivant et la matière","qs":[["Que faut-il à une graine pour germer ?",["de l'eau et de la chaleur","du sucre","du sable"],0,"Eau, chaleur et air : sans eau, la graine reste en sommeil."],["Un animal qui a des plumes est…",["un mammifère","un oiseau","un reptile"],1,"Plumes et bec : c'est un oiseau."],["L'eau qui devient de la glace, c'est…",["la fusion","la solidification","l'évaporation"],1,"Liquide → solide = solidification (il fait froid)."],["Le petit du chien s'appelle…",["le chiot","le chaton","le veau"],0,"Chien → chiot ; chat → chaton ; vache → veau."],["Pourquoi se lave-t-on les mains ?",["pour enlever les microbes","pour avoir chaud","pour briller"],0,"Le savon décroche les microbes et l'eau les emporte."]]},{"id":"ce1-em","nv":"ce1","m":"EMC","e":"⚖️","c":"#65489B","n":"Les règles de la classe","qs":[["À quoi sert le règlement de la classe ?",["à punir","à vivre ensemble","à décorer"],1,"Un règlement protège tout le monde, pas seulement le maître."],["Un camarade se moque d'un autre. Je…",["ne dis rien","le dis à un adulte","ris avec lui"],1,"Le silence laisse faire ; parler à un adulte protège."],["Les droits et les devoirs…",["vont ensemble","sont séparés","n'existent pas à l'école"],0,"Mon droit au calme implique mon devoir de ne pas déranger."],["On est tous différents. C'est…",["un problème","une richesse","une erreur"],1,"La différence n'empêche pas l'égalité de droits."],["Qui peut être harcelé ?",["seulement les petits","n'importe qui","seulement les nouveaux"],1,"N'importe qui : le harcèlement parle de celui qui le fait, pas de celui qui le subit."]]},{"id":"ce1-an","nv":"ce1","m":"Anglais","e":"🇬🇧","c":"#B93A73","n":"Se présenter","qs":[["« My name is… » veut dire…",["Je m'appelle…","J'ai… ans","J'habite…"],0,"My name is = mon nom est."],["« How old are you? » demande…",["ton nom","ton âge","ta couleur"],1,"How old = quel âge."],["« I am eight » veut dire…",["J'ai huit ans","Je suis le huitième","Il est huit heures"],0,"I am + âge = j'ai … ans."],["Comment dit-on « au revoir » ?",["hello","goodbye","thanks"],1,"goodbye = au revoir."],["« Thank you » veut dire…",["s'il te plaît","merci","pardon"],1,"Thank you = merci ; please = s'il te plaît."]]},{"id":"ce2-fr","nv":"ce2","m":"Français","e":"📖","c":"#E0533D","n":"Passé composé et accords","qs":[["« J'ai mangé une pomme. » Le verbe est au…",["présent","passé composé","futur"],1,"avoir au présent + participe passé = passé composé."],["Dans « une petite maison », l'adjectif est…",["une","petite","maison"],1,"L'adjectif qualifie le nom : petite dit comment est la maison."],["Complète : « Il … un gâteau. »",["a","à","as"],0,"« a » = le verbe avoir ; « à » est une préposition (aller à Paris)."],["Le sujet de « Les enfants jouent dans la cour » est…",["les enfants","jouent","la cour"],0,"On pose la question : qui est-ce qui joue ? Les enfants."],["L'imparfait de « je chante » est…",["je chanterai","je chantais","j'ai chanté"],1,"Imparfait : la terminaison -ais, -ais, -ait…"]]},{"id":"ce2-ma","nv":"ce2","m":"Maths","e":"🔢","c":"#23618F","n":"Nombres et calculs","qs":[["Dans 3 456, le chiffre 5 est le chiffre des…",["centaines","dizaines","unités"],1,"3 milliers, 4 centaines, 5 dizaines, 6 unités."],["7 × 8 = ?",["54","56","64"],1,"7 × 8 = 56. Astuce : 7 × 8 = 7 × 4 × 2 = 28 × 2."],["Le quart de 20, c'est…",["4","5","10"],1,"Le quart = diviser par 4 : 20 ÷ 4 = 5."],["Le périmètre d'un carré de 3 cm de côté est…",["6 cm","9 cm","12 cm"],2,"Périmètre = 4 × côté = 4 × 3 = 12 cm."],["Quelle fraction représente la moitié ?",["1/4","1/2","2/1"],1,"1/2 : une part sur deux."]]},{"id":"ce2-sc","nv":"ce2","m":"Sciences","e":"🔬","c":"#2E8B57","n":"Le cycle de l'eau","qs":[["L'eau qui s'évapore sous l'effet de la chaleur, c'est…",["la condensation","l'évaporation","la solidification"],1,"Chauffée, l'eau liquide devient vapeur : évaporation."],["La vapeur d'eau qui redevient liquide en altitude, c'est…",["la condensation","la fusion","l'infiltration"],0,"En refroidissant, la vapeur se condense en fines gouttes : les nuages."],["Dans une chaîne alimentaire, la plante est…",["le prédateur","le producteur","le consommateur"],1,"La plante produit sa nourriture grâce à la lumière : c'est le producteur."],["Les trois états de l'eau sont…",["solide, liquide, gazeux","chaud, froid, tiède","clair, trouble, sale"],0,"Glace (solide), eau (liquide), vapeur (gaz)."],["Que devient l'eau de pluie qui s'infiltre dans le sol ?",["une nappe souterraine","du sable","de la fumée"],0,"Elle alimente les nappes phréatiques, qui donnent les sources."]]},{"id":"ce2-hi","nv":"ce2","m":"Histoire","e":"🏛️","c":"#9B5320","n":"La Préhistoire","qs":[["Le premier homme utilisait la pierre pour…",["couper et chasser","écrire","conduire"],0,"La pierre taillée est le premier outil : c'est l'âge de la pierre."],["L'art des grottes s'appelle l'art…",["pariétal","moderne","gothique"],0,"Pariétal vient de paroi : les peintures sur les murs des grottes (Lascaux)."],["La Préhistoire se termine avec l'invention…",["de l'écriture","du feu","de la roue"],0,"L'écriture marque le début de l'Histoire : il y a 5 000 ans environ."],["Les hommes préhistoriques vivaient de…",["la chasse et la cueillette","l'usine","du commerce"],0,"Avant l'agriculture : chasse, pêche, cueillette, puis élevage."],["Quel animal a été domestiqué en premier ?",["le chien","le cheval","le chat"],0,"Le chien accompagne l'humain depuis la Préhistoire."]]},{"id":"ce2-ge","nv":"ce2","m":"Géographie","e":"🗺️","c":"#1F7A6C","n":"Mon pays : la France","qs":[["Combien de régions la France métropolitaine compte-t-elle ?",["10","13","18"],1,"13 régions métropolitaines, plus 5 d'outre-mer."],["Sur un plan, le nord est…",["en haut","en bas","à droite"],0,"Par convention : nord en haut, sud en bas, est à droite, ouest à gauche."],["Mayotte est un département…",["d'outre-mer","de métropole","étranger"],0,"Mayotte est un DROM : département et région d'outre-mer, depuis 2011."],["Le relief, c'est…",["les reliefs de montagnes et de plaines","le climat","la population"],0,"Le relief décrit les formes du terrain : plaines, plateaux, montagnes."],["Quel océan borde Mayotte ?",["l'océan Indien","l'Atlantique","le Pacifique"],0,"Mayotte est dans l'océan Indien, entre Madagascar et l'Afrique."]]},{"id":"ce2-an","nv":"ce2","m":"Anglais","e":"🇬🇧","c":"#B93A73","n":"Les animaux et les nombres","qs":[["« a dog », c'est…",["un chat","un chien","un cheval"],1,"dog = chien ; cat = chat."],["« eleven » correspond à…",["10","11","12"],1,"eleven = 11 ; twelve = 12."],["« I like… » veut dire…",["J'aime…","Je n'aime pas…","Je mange…"],0,"I like = j'aime ; I don't like = je n'aime pas."],["« a horse », c'est…",["un cheval","une souris","un oiseau"],0,"horse = cheval."],["Comment dit-on « vingt » ?",["twelve","twenty","two"],1,"twenty = 20."]]},{"id":"cm1-fr","nv":"cm1","m":"Français","e":"📖","c":"#E0533D","n":"Grammaire et conjugaison","qs":[["Dans « Le chat dort sur le canapé », « sur le canapé » est…",["un complément circonstanciel","le sujet","un adjectif"],0,"Il indique où : complément circonstanciel de lieu."],["Le futur de « nous finissons » est…",["nous finirons","nous finissions","nous avons fini"],0,"Futur : -rons, -rez, -ront."],["Complète : « Les élèves … dans la cour. »",["joue","jouent","joues"],1,"Le sujet est pluriel (les élèves) : le verbe s'accorde → jouent."],["Le COD de « Il mange une pomme » est…",["il","une pomme","mange"],1,"Il mange quoi ? Une pomme → COD."],["Un synonyme de « rapide » est…",["lent","vif","lourd"],1,"Vif = qui va vite, comme rapide."]]},{"id":"cm1-ma","nv":"cm1","m":"Maths","e":"🔢","c":"#23618F","n":"Fractions et décimaux","qs":[["3/4, c'est…",["plus grand que 1","plus petit que 1","égal à 1"],1,"3 parts sur 4 : il manque une part pour faire 1."],["2,5 + 1,5 = ?",["3","4","4,5"],1,"2 + 1 = 3 ; 0,5 + 0,5 = 1 → 4."],["Un dixième s'écrit…",["0,1","0,01","1,0"],0,"1/10 = 0,1 ; 1/100 = 0,01."],["Le périmètre d'un rectangle de 5 cm sur 3 cm est…",["8 cm","15 cm","16 cm"],2,"P = 2 × (L + l) = 2 × (5 + 3) = 16 cm."],["456 ÷ 4 = ?",["112","114","124"],1,"4 × 114 = 456. On vérifie toujours par la multiplication."]]},{"id":"cm1-sc","nv":"cm1","m":"Sciences","e":"🔬","c":"#2E8B57","n":"Le corps et la Terre","qs":[["La digestion commence…",["dans la bouche","dans l'estomac","dans l'intestin"],0,"Les dents broient, la salive commence à transformer les aliments."],["Le sang est propulsé par…",["le cœur","les poumons","le foie"],0,"Le cœur est une pompe : il envoie le sang dans tout le corps."],["Un volcan entre en éruption quand…",["le magma remonte","il pleut","la terre tourne"],0,"La pression du magma sous la croûte le fait remonter."],["Un séisme est…",["un tremblement de terre","une inondation","un orage"],0,"Les plaques de la croûte bougent et libèrent une énergie énorme."],["Dans un mélange eau + sable, le sable…",["se dissout","se dépose au fond","disparaît"],1,"Il ne se dissout pas : c'est un mélange hétérogène."]]},{"id":"cm1-hi","nv":"cm1","m":"Histoire","e":"🏛️","c":"#9B5320","n":"Le Moyen Âge","qs":[["Charlemagne a été couronné empereur en…",["800","1000","1492"],0,"Noël 800, par le pape Léon III, à Rome."],["Un château fort sert d'abord à…",["protéger et surveiller","habiter en ville","stocker du blé"],0,"Il contrôle un territoire : défense, résidence du seigneur, refuge."],["Les paysans qui travaillent la terre du seigneur sont…",["des seigneurs","des serfs","des chevaliers"],1,"Ils sont attachés à la terre et doivent des redevances."],["La féodalité repose sur…",["la fidélité entre seigneur et vassal","l'élection","le commerce"],0,"Le vassal sert le seigneur, le seigneur le protège."],["Jeanne d'Arc a combattu pendant…",["la guerre de Cent Ans","les croisades","la Révolution"],0,"Guerre de Cent Ans (1337-1453) contre les Anglais."]]},{"id":"cm1-ge","nv":"cm1","m":"Géographie","e":"🗺️","c":"#1F7A6C","n":"La Terre et les continents","qs":[["Combien y a-t-il de continents ?",["5","6","7"],1,"Afrique, Amérique du Nord, Amérique du Sud, Antarctique, Asie, Europe, Océanie — on compte souvent 6 en regroupant les Amériques."],["L'équateur est…",["un parallèle","un méridien","un océan"],0,"C'est le parallèle à égale distance des deux pôles."],["Les lignes qui vont d'un pôle à l'autre sont…",["les parallèles","les méridiens","les tropiques"],1,"Les méridiens servent à mesurer la longitude."],["Le plus grand océan est…",["l'Atlantique","le Pacifique","l'Indien"],1,"Le Pacifique couvre un tiers de la surface du globe."],["Mayotte se situe dans l'hémisphère…",["nord","sud","ni l'un ni l'autre"],1,"Mayotte est au sud de l'équateur, dans l'océan Indien."]]},{"id":"cm1-an","nv":"cm1","m":"Anglais","e":"🇬🇧","c":"#B93A73","n":"Le présent simple","qs":[["« She … football every day. »",["play","plays","playing"],1,"À la 3e personne du singulier, le verbe prend un -s."],["« I don't like fish » veut dire…",["J'aime le poisson","Je n'aime pas le poisson","Je mange du poisson"],1,"don't = do not : la négation au présent."],["Comment pose-t-on une question avec « you » ?",["Do you like…?","You like…?","Are you like…?"],"0","Au présent simple : Do + sujet + verbe."],["« Monday », c'est…",["lundi","mardi","dimanche"],0,"Monday = lundi."],["« He is twelve » veut dire…",["Il a douze ans","Il est midi","Il est douze"],0,"He is + âge = il a … ans."]]},{"id":"cm2-fr","nv":"cm2","m":"Français","e":"📖","c":"#E0533D","n":"Passé simple et accords","qs":[["« Il partit très tôt. » Le verbe est au…",["passé composé","passé simple","imparfait"],1,"Passé simple : action brève et achevée dans un récit écrit."],["Complète : « Les lettres que j'ai … »",["écrit","écrites","écrits"],1,"Avec avoir, le participe s'accorde avec le COD placé avant : les lettres (fém. pluriel) → écrites."],["« Qu'il vienne » est au…",["subjonctif","indicatif","impératif"],0,"« qu'il » + verbe : c'est le subjonctif."],["Dans « Le livre que tu lis est passionnant », la proposition relative est…",["que tu lis","le livre","est passionnant"],0,"Elle complète le nom « livre » : c'est une subordonnée relative."],["« Leur » ou « leurs » ? « Ils ont rangé … cahiers. »",["leur","leurs","leur's"],1,"Plusieurs cahiers → accord au pluriel : leurs."]]},{"id":"cm2-ma","nv":"cm2","m":"Maths","e":"🔢","c":"#23618F","n":"Proportionnalité et aires","qs":[["3 stylos coûtent 6 €. Combien coûtent 5 stylos ?",["8 €","10 €","12 €"],1,"1 stylo = 2 €, donc 5 × 2 = 10 €."],["L'aire d'un rectangle de 6 cm sur 4 cm est…",["10 cm²","20 cm²","24 cm²"],2,"Aire = longueur × largeur = 6 × 4 = 24 cm²."],["25 % de 80, c'est…",["20","25","40"],0,"25 % = le quart : 80 ÷ 4 = 20."],["La moyenne de 10, 12 et 14 est…",["11","12","13"],1,"(10 + 12 + 14) ÷ 3 = 36 ÷ 3 = 12."],["Un robinet remplit 3 seaux en 6 minutes. Combien de seaux en 10 minutes ?",["4","5","6"],1,"1 seau toutes les 2 min → 5 seaux en 10 min."]]},{"id":"cm2-sc","nv":"cm2","m":"Sciences","e":"🔬","c":"#2E8B57","n":"La Terre et l'énergie","qs":[["Dans le système solaire, les planètes tournent autour…",["de la Lune","du Soleil","de la Terre"],1,"Le Soleil est l'étoile centrale : tout le système tourne autour."],["Une énergie renouvelable est une énergie…",["qui se renouvelle vite","qui coûte cher","qui vient du pétrole"],0,"Soleil, vent, eau : elles se renouvellent en permanence."],["L'énergie ne disparaît pas : elle…",["se transforme","s'annule","s'évapore"],0,"Un panneau solaire transforme la lumière en électricité."],["La photosynthèse permet à la plante de…",["fabriquer sa nourriture","respirer la nuit","boire de l'eau"],0,"Lumière + eau + CO₂ → matière organique + oxygène."],["Le tri des déchets sert à…",["recycler la matière","les brûler tous","les enterrer"],0,"Trier permet de réutiliser le verre, le papier, le plastique."]]},{"id":"cm2-hi","nv":"cm2","m":"Histoire","e":"🏛️","c":"#9B5320","n":"Les guerres mondiales","qs":[["La Première Guerre mondiale a lieu de…",["1914 à 1918","1939 à 1945","1870 à 1871"],0,"Quatre ans de guerre de tranchées."],["La Seconde Guerre mondiale se termine en Europe en…",["1943","1945","1948"],1,"8 mai 1945 : capitulation de l'Allemagne."],["La Shoah est…",["le génocide des Juifs","une bataille","un traité"],0,"Six millions de Juifs assassinés par l'Allemagne nazie."],["La Révolution française commence en…",["1789","1848","1917"],0,"Prise de la Bastille : 14 juillet 1789."],["L'Europe s'est construite après 1945 pour…",["éviter une nouvelle guerre","faire la guerre","partager les colonies"],0,"La CECA (1951) puis la CEE (1957) : rapprocher les économies."]]},{"id":"cm2-em","nv":"cm2","m":"EMC","e":"⚖️","c":"#65489B","n":"La République et ses valeurs","qs":[["La devise de la France est…",["Liberté, Égalité, Fraternité","Un pour tous, tous pour un","Dieu et le Roi"],0,"Elle figure sur les bâtiments publics."],["La laïcité, c'est…",["la neutralité de l'État","l'interdiction des religions","une religion d'État"],0,"L'État ne favorise aucune religion et garantit la liberté de croire ou de ne pas croire."],["Le droit de vote des femmes date de…",["1944","1848","1968"],0,"Les femmes votent pour la première fois en 1945."],["Un enfant a droit à…",["l'éducation et la protection","rien de particulier","seulement le jeu"],0,"La Convention internationale des droits de l'enfant (1989)."],["Le harcèlement, c'est…",["une violence répétée","une plaisanterie","un conflit unique"],0,"La répétition et le rapport de force le distinguent d'une dispute."]]},{"id":"cm2-an","nv":"cm2","m":"Anglais","e":"🇬🇧","c":"#B93A73","n":"Décrire et comparer","qs":[["« taller than », c'est…",["le comparatif","le superlatif","le passé"],0,"-er / more … than = comparatif : plus grand que."],["« the biggest » est…",["le comparatif","le superlatif","un adverbe"],1,"the + -est = superlatif : le plus grand."],["« I have lived here for two years » est au…",["present perfect","prétérit","futur"],0,"have + participe passé : present perfect."],["Comment dit-on « hier » ?",["yesterday","tomorrow","today"],0,"yesterday = hier ; tomorrow = demain."],["« What does she look like? » demande…",["son apparence","son âge","son adresse"],0,"look like = à quoi elle ressemble."]]}];
+const BADGES = [{"id":"first","n":"Premier pas","e":"🎯","d":"Terminer un premier défi"},{"id":"perfect","n":"Sans faute","e":"⭐","d":"Réussir un défi 5/5"},{"id":"three","n":"Trois étoiles","e":"🌟","d":"Obtenir 3 étoiles sur un défi"},{"id":"streak3","n":"Trois jours","e":"🔥","d":"Jouer 3 jours de suite"},{"id":"streak7","n":"Une semaine","e":"🚀","d":"Jouer 7 jours de suite"},{"id":"ten","n":"Dix défis","e":"🏅","d":"Terminer 10 défis"},{"id":"cp","n":"Maître du CP","e":"🐣","d":"3 étoiles à tous les défis du CP"},{"id":"ce1","n":"Maître du CE1","e":"🐥","d":"3 étoiles à tous les défis du CE1"},{"id":"ce2","n":"Maître du CE2","e":"🦊","d":"3 étoiles à tous les défis du CE2"},{"id":"cm1","n":"Maître du CM1","e":"🦅","d":"3 étoiles à tous les défis du CM1"},{"id":"cm2","n":"Maître du CM2","e":"🦁","d":"3 étoiles à tous les défis du CM2"},{"id":"lecture","n":"Champion de lecture","e":"📖","d":"3 étoiles à 3 défis de français"},{"id":"calcul","n":"As du calcul","e":"🔢","d":"3 étoiles à 3 défis de maths"},{"id":"hist","n":"Explorateur du temps","e":"🏛️","d":"3 étoiles à 2 défis d'histoire"},{"id":"sci","n":"Petit savant","e":"🔬","d":"3 étoiles à 2 défis de sciences"},{"id":"eng","n":"Hello!","e":"🇬🇧","d":"3 étoiles à 2 défis d'anglais"},{"id":"xp500","n":"500 points","e":"💎","d":"Atteindre 500 XP"},{"id":"xp1500","n":"1 500 points","e":"👑","d":"Atteindre 1 500 XP"}];
+
+const $ = s => document.querySelector(s);
+const KEY = "defi_v1";
+let st = JSON.parse(localStorage.getItem(KEY) || '{"xp":0,"stars":{},"days":[],"badges":[]}');
+if(!st.stars) st.stars = {};
+if(!st.days) st.days = [];
+if(!st.badges) st.badges = [];
+const save = () => localStorage.setItem(KEY, JSON.stringify(st));
+const today = () => new Date().toISOString().slice(0,10);
+
+const TITRES = ["Petit explorateur","Apprenti curieux","Chercheur d'étoiles","Malin du jour","Fusée rapide","Champion de la classe","As des défis","Maître des matières","Génie de l'école","Légende du primaire"];
+let curNiv = "cp";
+
+/* ---------- helpers ---------- */
+function totalStars(){ return DEFIS.reduce((a,d)=> a + (st.stars[d.id]||0), 0); }
+function maxStars(){ return DEFIS.length * 3; }
+function starsOf(id){ return st.stars[id] || 0; }
+function defisOf(nv){ return DEFIS.filter(d => d.nv === nv); }
+function starsNiv(nv){ const ds=defisOf(nv); return ds.reduce((a,d)=>a+starsOf(d.id),0) + "/" + ds.length*3; }
+function playerLevel(){ return Math.min(10, Math.floor(st.xp / 150) + 1); }
+function todayCount(){ return st.days.filter(d => d === today()).length; }
+
+function confetti(n=60){
+  const box = $("#conf"); box.innerHTML="";
+  const cols=["#F5A623","#22C55E","#3B82F6","#EF4444","#7C4DFF","#FBBF24","#EC4899"];
+  for(let i=0;i<n;i++){
+    const c=document.createElement("i"); c.className="cf";
+    c.style.left = Math.random()*100+"vw";
+    c.style.top = "-20px";
+    c.style.background = cols[Math.floor(Math.random()*cols.length)];
+    c.style.animationDuration = (1.6+Math.random()*1.6)+"s";
+    c.style.animationDelay = (Math.random()*0.5)+"s";
+    c.style.transform = "rotate("+Math.random()*360+"deg)";
+    box.appendChild(c);
+  }
+  setTimeout(()=>{ box.innerHTML=""; }, 3800);
+}
+
+/* ---------- accueil ---------- */
+function renderHome(){
+  $("#hudXp").textContent = st.xp;
+  $("#hudStreak").textContent = st.days.length ? streakLen() : 0;
+  const lv = playerLevel();
+  $("#plvl").textContent = "Niveau " + lv + " · " + TITRES[lv-1];
+  $("#xpFill").style.width = Math.min(100, ((st.xp % 150) / 150) * 100) + "%";
+  const tot = totalStars();
+  $("#pseudo").textContent = tot >= 40 ? "Champion !" : (tot >= 12 ? "Bien joué !" : "C'est parti !");
+
+  const nl = $("#levels"); nl.innerHTML = "";
+  NIVEAUX.forEach(n => {
+    const b = document.createElement("button");
+    b.className = "lv" + (n.id===curNiv ? " on" : "");
+    b.style.setProperty("--c", n.c);
+    b.innerHTML = '<div class="ani">'+n.e+'</div><b>'+n.n+'</b><div class="st">'+starsNiv(n.id)+' ★</div>';
+    b.onclick = () => { curNiv = n.id; renderHome(); };
+    nl.appendChild(b);
+  });
+
+  const nv = NIVEAUX.find(x => x.id === curNiv);
+  $("#avatar").textContent = nv.e;
+  $("#avatar").style.background = nv.c + "22";
+  $("#avatar").style.borderColor = nv.c;
+  $("#defiTitle").textContent = "Défis du " + nv.n;
+  const ds = defisOf(curNiv);
+  $("#defiCount").textContent = ds.length + " défis · " + starsNiv(curNiv) + " étoiles";
+
+  const g = $("#defis"); g.innerHTML = "";
+  ds.forEach(d => {
+    const s = starsOf(d.id);
+    const el = document.createElement("button");
+    el.className = "dc"; el.style.setProperty("--c", d.c);
+    el.innerHTML =
+      '<div class="topline"><span class="mat" style="background:'+d.c+'">'+d.m+'</span></div>'+
+      '<h3>'+d.n+'</h3>'+
+      '<div class="stars">'+ "★".repeat(s) + '<span style="color:#D9CFBF">' + "★".repeat(3-s) + '</span></div>'+
+      '<span class="go">' + (s ? "Rejouer" : "Jouer") + ' →</span>';
+    el.onclick = () => startDefi(d.id);
+    g.appendChild(el);
+  });
+
+  const bg = $("#badges"); bg.innerHTML = "";
+  BADGES.forEach(b => {
+    const won = st.badges.includes(b.id);
+    const el = document.createElement("div");
+    el.className = "bd" + (won ? " won" : "");
+    el.title = b.d;
+    el.innerHTML = '<div class="e">'+b.e+'</div><b>'+b.n+'</b>';
+    bg.appendChild(el);
+  });
+  $("#badgeCount").textContent = st.badges.length + " / " + BADGES.length;
+}
+
+function streakLen(){
+  const s = [...new Set(st.days)].sort();
+  if(!s.length) return 0;
+  let n = 1, cur = new Date(s[s.length-1]);
+  if(s[s.length-1] !== today()){
+    const y = new Date(); y.setDate(y.getDate()-1);
+    if(s[s.length-1] !== y.toISOString().slice(0,10)) return 0;
+  }
+  for(let i=s.length-1;i>0;i--){
+    const a = new Date(s[i]), b = new Date(s[i-1]);
+    if((a-b)/86400000 === 1) n++; else break;
+  }
+  return n;
+}
+
+/* ---------- défi ---------- */
+let game = {d:null, i:0, score:0, answered:false, res:[]};
+
+function startDefi(id){
+  const d = DEFIS.find(x => x.id === id);
+  game = {d, i:0, score:0, answered:false, res:[]};
+  show("v-defi"); renderQ();
+}
+function show(id){
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id===id));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function renderPips(){
+  const p = $("#pips"); p.innerHTML = "";
+  game.d.qs.forEach((_,i) => {
+    const el = document.createElement("i");
+    if(i < game.res.length) el.className = game.res[i] ? "ok" : "ko";
+    else if(i === game.i) el.className = "cur";
+    p.appendChild(el);
+  });
+}
+function renderQ(){
+  if(game.i >= game.d.qs.length) return endDefi();
+  renderPips();
+  const q = game.d.qs[game.i];
+  const zone = $("#qzone");
+  zone.innerHTML =
+    '<span class="qmat" style="background:'+game.d.c+'">'+game.d.m+' · question '+(game.i+1)+'/'+game.d.qs.length+'</span>'+
+    '<h2 class="qtext">'+q[0]+'</h2>'+
+    '<div class="opts" id="opts"></div>'+
+    '<div class="fb" id="fb"></div>'+
+    '<button class="next" id="next" style="display:none">Question suivante →</button>';
+  const o = $("#opts");
+  q[1].forEach((txt,k) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = '<span class="k">'+"ABC"[k]+'</span><span>'+txt+'</span>';
+    b.onclick = () => answer(k);
+    o.appendChild(b);
+  });
+}
+function answer(k){
+  if(game.answered) return;
+  game.answered = true;
+  const q = game.d.qs[game.i];
+  const good = q[2];
+  const opts = [...document.querySelectorAll(".opt")];
+  opts.forEach((b,idx) => {
+    b.disabled = true;
+    if(idx === good) b.classList.add("ok");
+    if(idx === k && k !== good) b.classList.add("ko");
+  });
+  const fb = $("#fb");
+  if(k === good){
+    game.score++;
+    fb.className = "fb good on";
+    fb.innerHTML = "✅ <b>Bravo !</b> " + q[3];
+  } else {
+    fb.className = "fb bad on";
+    fb.innerHTML = "❌ <b>Pas tout à fait.</b> " + q[3];
+  }
+  game.res.push(k === good);
+  const nx = $("#next");
+  nx.style.display = "block";
+  nx.textContent = (game.i === game.d.qs.length-1) ? "Voir mon résultat 🏁" : "Question suivante →";
+  nx.onclick = () => { game.i++; game.answered=false; renderQ(); };
+  renderPips();
+}
+
+function endDefi(){
+  const n = game.d.qs.length, sc = game.score;
+  const stars = sc === n ? 3 : (sc === n-1 ? 2 : (sc >= Math.ceil(n/2) ? 1 : 0));
+  const prev = starsOf(game.d.id);
+  if(stars > prev) st.stars[game.d.id] = stars;
+  const gained = sc * 10 + (stars === 3 ? 20 : 0);
+  st.xp += gained;
+  if(!st.days.includes(today())) st.days.push(today());
+
+  const newB = checkBadges();
+  save();
+  $("#hudXp").textContent = st.xp;
+  $("#hudStreak").textContent = streakLen();
+
+  $("#rez").innerHTML =
+    '<div class="stars">'+ "★".repeat(stars).replace(/★/g,"<b>★</b>") + "★".repeat(3-stars) +'</div>'+
+    '<h2>'+(stars===3?"Parfait !":stars===2?"Très bien !":stars===1?"Bien joué !":"À retenter")+'</h2>'+
+    '<p>'+sc+' bonne'+(sc>1?'s':'')+' réponse'+(sc>1?'s':'')+' sur '+n+' · '+game.d.m+'</p>'+
+    '<div class="xp">+'+gained+' XP</div>'+
+    '<div class="newbadges" id="newb"></div>'+
+    '<div class="acts">'+
+      '<button class="btn2 primary" id="again">↻ Rejouer ce défi</button>'+
+      '<button class="btn2" id="home">🏠 Mes défis</button>'+
+    '</div>';
+
+  if(newB.length){
+    $("#newb").innerHTML = newB.map(id => {
+      const b = BADGES.find(x => x.id === id);
+      return '<div class="nb"><div class="e">'+b.e+'</div><b>'+b.n+'</b></div>';
+    }).join("");
+  }
+  if(stars >= 2 || newB.length) confetti(stars===3?90:50);
+  $("#again").onclick = () => startDefi(game.d.id);
+  $("#home").onclick = () => { renderHome(); show("v-home"); };
+  show("v-end");
+}
+
+/* ---------- badges ---------- */
+function checkBadges(){
+  const won = [];
+  const add = id => { if(!st.badges.includes(id)){ st.badges.push(id); won.push(id); } };
+  const played = Object.keys(st.stars).length;
+  const totalD = DEFIS.length;
+
+  if(played >= 1) add("first");
+  if(Object.values(st.stars).some(v => v === 3)) { add("three"); add("perfect"); }
+  const s = streakLen();
+  if(s >= 3) add("streak3");
+  if(s >= 7) add("streak7");
+  if(played >= 10) add("ten");
+  NIVEAUX.forEach(n => {
+    const ds = defisOf(n.id);
+    if(ds.every(d => starsOf(d.id) === 3)) add(n.id);
+  });
+  const byMat = m => DEFIS.filter(d => d.m === m && starsOf(d.id) === 3).length;
+  if(byMat("Français") >= 3) add("lecture");
+  if(byMat("Maths") >= 3) add("calcul");
+  if(byMat("Histoire") >= 2) add("hist");
+  if(byMat("Sciences") >= 2 || byMat("Questionner le monde") >= 2) add("sci");
+  if(byMat("Anglais") >= 2) add("eng");
+  if(st.xp >= 500) add("xp500");
+  if(st.xp >= 1500) add("xp1500");
+  return won;
+}
+
+/* ---------- navigation ---------- */
+$("#quit").onclick = () => { renderHome(); show("v-home"); };
+document.addEventListener("keydown", e => {
+  if(!$("#v-defi").classList.contains("on")) return;
+  if(["1","2","3"].includes(e.key)){ const o=document.querySelectorAll(".opt")[+e.key-1]; if(o) o.click(); }
+  if(e.key === "Enter"){ const n=$("#next"); if(n && n.style.display!=="none") n.click(); }
+});
+
+renderHome();
+</script>
+</body>
+</html>
