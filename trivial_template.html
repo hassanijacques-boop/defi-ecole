@@ -249,7 +249,7 @@ function askQuestion(pos){
   const deja=G.used.size;
   z.innerHTML=
     '<div class="qcard">'+
-      '<span class="qcount">'+c.n+(G.rolled?' · case camembert 🧀':'')+'</span>'+
+      '<span class="qcount">'+(G.mayotte?'🌴 Mayotte':'Culture générale')+(G.rolled?' · camembert 🧀':'')+'</span>'+
       '<span class="qcat" style="background:'+c.c+'">'+c.e+' '+c.n+'</span>'+
       '<h2 class="qtext">'+G.q.q+'</h2>'+
       '<div id="opts"></div>'+

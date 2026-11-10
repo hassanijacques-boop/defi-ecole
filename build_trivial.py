@@ -37,6 +37,7 @@ try:
 except FileNotFoundError:
     pass
 
+h = h.replace('\U0001F5A7', '\U0001F310')   # 🖧 n'est pas rendu sur tous les appareils
 open('/workspace/defi/trivial.html', 'w', encoding='utf-8').write(h)
 js = re.search(r'<script>(.*?)</script>', h, re.S).group(1)
 open('/tmp/vt5.js', 'w', encoding='utf-8').write(js)
