@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trivial École — le plateau, le dé, les camemberts</title>
-<meta name="description" content="Le vrai Trivial Pursuit de l'école : un plateau, un dé, 6 catégories, 150 questions de culture générale. De 1 à 4 joueurs.">
+<meta name="description" content="Le vrai Trivial Pursuit de l'école : un plateau, un dé, 6 catégories, 150 questions de culture générale + 50 questions spécial Mayotte. De 1 à 4 joueurs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -91,7 +91,7 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
 <div class="top">
   <div class="logo"><span class="mk"></span><span>TRIVIAL ÉCOLE</span></div>
   <div class="spacer"></div>
-  <span style="font-size:11.5px;font-weight:800;color:var(--ink2)">150 questions</span>
+  <span style="font-size:11.5px;font-weight:800;color:var(--ink2)">150 + 50 Mayotte</span>
 </div>
 
 <main>
@@ -102,8 +102,8 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
     <h2>Combien de joueurs ?</h2>
     <div class="pcount" id="pcount"></div>
     <div class="names" id="names"></div>
-    <button class="play" id="go">Lancer la partie 🎲</button>
-    <button class="play" id="goMay" style="margin-top:9px;background:linear-gradient(135deg,#0E7C5A,#12A574);box-shadow:0 5px 0 #0A5A41">🌴 Partie spéciale Mayotte (50 questions)</button>
+    <button class="play" id="go">Partie classique — 150 questions 🎲</button>
+    <button class="play" id="goMay" style="margin-top:9px;background:linear-gradient(135deg,#0E7C5A,#12A574);color:#fff;box-shadow:0 5px 0 #0A5A41">🌴 Spécial Mayotte — 50 questions</button>
     <p style="font-size:11.5px;color:var(--ink2);font-weight:600;margin:8px 0 0">La partie Mayotte garde le plateau et le dé : seules les questions changent.</p>
   </div>
 </section>
@@ -127,7 +127,7 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
 <section class="view" id="v-win"><div class="win" id="winbox"></div></section>
 </main>
 
-<footer>Trivial École — 150 questions de culture générale, niveau junior.<br><a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a></footer>
+<footer>Trivial École — 150 questions de culture générale + 50 spécial Mayotte, niveau junior.<br><a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a></footer>
 <div id="conf"></div>
 
 <script>
@@ -204,7 +204,7 @@ function renderSide(){
   $("#pdot").style.background=p.color;
   $("#who").textContent="Au tour de "+p.name;
   const nParts=p.parts.length;
-  $("#sub").textContent=nParts+"/6 camemberts · case "+(p.pos+1)+"/"+N;
+  $("#sub").textContent=nParts+"/6 camemberts · case "+(p.pos+1)+"/"+N+(G.mayotte?" · 🌴 Mayotte":"");
   const pl=$("#plist"); pl.innerHTML="";
   G.players.forEach((x,i)=>{
     const d=document.createElement("div"); d.className="pl"+(i===G.turn?" act":"");
@@ -234,9 +234,15 @@ $("#roll").onclick=()=>{
 };
 
 /* ---------- question ---------- */
+/* mélange les propositions : sinon la bonne réponse serait toujours en A */
+function shuffled(q){
+  const idx=q.o.map((_,i)=>i);
+  for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=idx[i];idx[i]=idx[j];idx[j]=t;}
+  return {c:q.c, q:q.q, o:idx.map(i=>q.o[i]), r:idx.indexOf(q.r), e:q.e};
+}
 function askQuestion(pos){
   const cat=catOf(pos), c=CATS.find(k=>k.id===cat);
-  G.cat=c; G.q=pickQ(cat); G.phase="q"; G.rolled=isCamb(pos);
+  G.cat=cat; G.q=shuffled(pickQ(cat)); G.phase="q"; G.rolled=isCamb(pos);
   renderSide();
   const z=$("#qzone");
   const total=Q.filter(q=>q.c===cat).length;
