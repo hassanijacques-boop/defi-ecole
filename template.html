@@ -436,7 +436,8 @@ function checkBadges(){
   if(played >= 10) add("ten");
   NIVEAUX.forEach(n => {
     const ds = defisOf(n.id);
-    if(ds.every(d => starsOf(d.id) === 3)) add(n.id);
+    const need = Math.ceil(ds.length * 0.8);
+    if(ds.filter(d => starsOf(d.id) === 3).length >= need) add(n.id);
   });
   const byMat = m => DEFIS.filter(d => d.m === m && starsOf(d.id) === 3).length;
   if(byMat("Français") >= 3) add("lecture");
