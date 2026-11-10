@@ -445,6 +445,10 @@ function checkBadges(){
   if(byMat("Histoire") >= 2) add("hist");
   if(byMat("Sciences") >= 2 || byMat("Questionner le monde") >= 2) add("sci");
   if(byMat("Anglais") >= 2) add("eng");
+  if(byMat("Découverte du monde") >= 2) add("curieux");
+  if(byMat("Arts") >= 2) add("artiste");
+  if(byMat("Culture") >= 2) add("culture");
+  if(Object.values(st.stars).filter(v => v === 3).length >= 5) add("sansfaute5");
   if(st.xp >= 500) add("xp500");
   if(st.xp >= 1500) add("xp1500");
   return won;
