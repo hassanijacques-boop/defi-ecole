@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trivial École — le jeu des questions générales</title>
+<meta name="description" content="Le Trivial Pursuit version école : 6 catégories, des questions de culture générale, de 1 à 4 joueurs. On passe le téléphone et on gagne ses camemberts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF9F0; --card:#FFFFFF; --ink:#1B2440; --ink2:#616C8A; --line:#EADFCB;
+  --geo:#1E6FD9; --his:#E8B31C; --art:#A855F7; --sci:#22A06B; --spo:#F97316; --div:#E8456B;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;
+  background-image:radial-gradient(#00000009 1.2px,transparent 1.2px);background-size:26px 26px;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer;border:none}
+.top{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:3px solid var(--ink);background:rgba(255,249,240,.95);position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.03em}
+.logo .mk{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--geo) 0 60deg,var(--his) 60deg 120deg,var(--art) 120deg 180deg,var(--sci) 180deg 240deg,var(--spo) 240deg 300deg,var(--div) 300deg 360deg);border:2px solid var(--ink)}
+.spacer{flex:1}
+main{max-width:940px;margin:0 auto;padding:18px 16px 60px}
+.view{display:none}.view.on{display:block}
+
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,4.6vw,40px);letter-spacing:-.04em;line-height:1.03;margin:8px 0 0}
+h1 em{font-style:normal;background:linear-gradient(90deg,var(--geo),var(--art),var(--div));-webkit-background-clip:text;background-clip:text;color:transparent}
+p.lead{color:var(--ink2);font-size:15px;max-width:56ch;margin:12px 0 0}
+
+.setup{margin-top:22px;background:var(--card);border:3px solid var(--ink); border-radius:18px;padding:18px;box-shadow:5px 5px 0 var(--ink)}
+.setup h2{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;margin:0 0 10px;letter-spacing:-.02em}
+.pcount{display:flex;gap:8px;flex-wrap:wrap}
+.pcount button{width:52px;height:52px;border-radius:13px;border:3px solid var(--ink);background:#FFF6E6;font-weight:800;font-size:18px;box-shadow:3px 3px 0 var(--ink)}
+.pcount button.on{background:var(--ink);color:#fff}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.names input{padding:10px 12px;border:3px solid var(--ink);border-radius:11px;font-family:inherit;font-size:14px;font-weight:600;background:#FFFCF6;width:100%}
+.play{margin-top:16px;width:100%;padding:16px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:16px;box-shadow:0 5px 0 #0E1428}
+.play:active{transform:translateY(3px);box-shadow:0 2px 0 #0E1428}
+
+/* ---------- PLATEAU ---------- */
+.board{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;margin:6px 0 14px}
+.wheel{width:230px;height:230px;flex:0 0 auto;filter:drop-shadow(0 6px 14px rgba(27,36,64,.18))}
+.turn{flex:1;min-width:220px}
+.turn .who{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;letter-spacing:-.02em}
+.turn .sub{color:var(--ink2);font-size:13px;font-weight:600;margin-top:2px}
+.players{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pl{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.pl.act{border-color:var(--ink);box-shadow:2px 2px 0 var(--ink);background:#FFFBEF}
+.pl .n{font-family:'Bricolage Grotesque',sans-serif}
+
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
+.cat{position:relative;display:flex;align-items:center;gap:9px;padding:13px 12px;border-radius:14px;border:3px solid var(--ink);
+  background:var(--c);color:#fff;font-weight:800;font-size:13.5px;text-align:left;box-shadow:3px 3px 0 var(--ink);transition:.12s}
+.cat:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.cat.done{background:#EEE7D8;color:#8C94A8;border-color:#C9C0AE;box-shadow:none;cursor:default}
+.cat .e{font-size:18px}
+.cat small{display:block;font-size:10px;font-weight:700;opacity:.85;letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- QUESTION ---------- */
+.qcard{background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:20px;box-shadow:5px 5px 0 var(--ink)}
+.qcat{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--c);padding:4px 11px;border-radius:99px}
+.qtext{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(19px,3.4vw,25px);line-height:1.24;letter-spacing:-.025em;margin:12px 0 16px}
+.opt{display:flex;align-items:center;gap:11px;width:100%;background:#FFF8E9;border:3px solid var(--ink);border-radius:13px;padding:13px 14px;
+  font-size:15px;font-weight:700;text-align:left;margin-bottom:9px;box-shadow:3px 3px 0 var(--ink)}
+.opt:hover{background:#FFF2DA}
+.opt .k{width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:0 0 auto}
+.opt.ok{background:#DCFCE7;border-color:#15803D}.opt.ok .k{background:#15803D}
+.opt.ko{background:#FEE2E2;border-color:#B91C1C}.opt.ko .k{background:#B91C1C}
+.fb{margin-top:12px;padding:12px;border-radius:11px;font-size:14px;font-weight:600;display:none}
+.fb.on{display:block}
+.fb.good{background:#DCFCE7;border:2px solid #15803D;color:#14532D}
+.fb.bad{background:#FEE2E2;border:2px solid #B91C1C;color:#7F1D1D}
+.next{width:100%;margin-top:12px;padding:15px;border-radius:13px;background:var(--ink);color:#fff;font-weight:800;font-size:15px;box-shadow:0 5px 0 #0E1428;display:none}
+.next:active{transform:translateY(3px);box-shadow:0 2px 0 #0E1428}
+
+.win{text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:28px 20px;box-shadow:5px 5px 0 var(--ink)}
+.win .trophy{font-size:60px}
+.win h2{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;margin:8px 0 0;letter-spacing:-.03em}
+.win p{color:var(--ink2);font-weight:600;margin:8px 0 18px}
+#conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:90}
+.cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+footer{text-align:center;color:#8A93A8;font-size:11.5px;padding:20px 16px 40px}
+footer a{font-weight:700;border-bottom:2px solid var(--geo)}
+@media(max-width:620px){.wheel{width:180px;height:180px}.names{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo"><span class="mk"></span><span>TRIVIAL ÉCOLE</span></div>
+  <div class="spacer"></div>
+  <span style="font-size:12px;font-weight:800;color:var(--ink2);margin-right:6px">6 catégories · 72 questions</span><a href="./" style="font-size:12.5px;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:5px 11px;background:#fff;text-decoration:none;color:var(--ink)">← Défis</a>
+</div>
+
+<main>
+
+<!-- ============ SETUP ============ -->
+<section class="view on" id="v-setup">
+  <h1>Six camemberts. <em>Et la meilleure mémoire.</em></h1>
+  <p class="lead">Le jeu des questions générales, version école : six catégories, une question par tour, et un camembert à compléter. De 1 à 4 joueurs — on se passe le téléphone.</p>
+
+  <div class="setup">
+    <h2>Combien de joueurs ?</h2>
+    <div class="pcount" id="pcount"></div>
+    <div class="names" id="names"></div>
+    <button class="play" id="go">Lancer la partie 🎲</button>
+  </div>
+</section>
+
+<!-- ============ JEU ============ -->
+<section class="view" id="v-game">
+  <div class="board">
+    <svg class="wheel" id="wheel" viewBox="0 0 200 200"></svg>
+    <div class="turn">
+      <div class="who" id="who"></div>
+      <div class="sub" id="sub"></div>
+      <div class="players" id="plist"></div>
+    </div>
+  </div>
+  <div class="cats" id="cats"></div>
+  <div id="qzone"></div>
+</section>
+
+<!-- ============ FIN ============ -->
+<section class="view" id="v-win">
+  <div class="win" id="winbox"></div>
+</section>
+
+</main>
+
+<footer>
+  Trivial École — questions de culture générale, d'après le principe du Trivial Pursuit.<br>
+  Progression non enregistrée : une partie, un plaisir · <a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a>
+</footer>
+<div id="conf"></div>
+
+<script>
+const CATS = [
+ {id:"geo", n:"Géographie", e:"🌍", c:"var(--geo)"},
+ {id:"his", n:"Histoire", e:"🏛️", c:"var(--his)"},
+ {id:"art", n:"Arts & Littérature", e:"🎨", c:"var(--art)"},
+ {id:"sci", n:"Sciences & Nature", e:"🔬", c:"var(--sci)"},
+ {id:"spo", n:"Sports & Loisirs", e:"⚽", c:"var(--spo)"},
+ {id:"div", n:"Divertissements", e:"🎬", c:"var(--div)"},
+];
+
+const Q = [{"c":"geo","q":"Quelle est la capitale du Canada ?","o":["Ottawa","Toronto","Montréal"],"r":0,"e":"Ottawa, même si Toronto est la plus grande ville du pays."},{"c":"geo","q":"Quel est le plus grand pays du monde par sa superficie ?","o":["La Russie","Le Canada","La Chine"],"r":0,"e":"Environ 17 millions de km², sur deux continents."},{"c":"geo","q":"Quel fleuve traverse Paris ?","o":["La Seine","La Loire","Le Rhône"],"r":0,"e":"La Seine, qui se jette dans la Manche au Havre."},{"c":"geo","q":"Dans quel pays la pizza est-elle née ?","o":["L'Italie","La Grèce","L'Espagne"],"r":0,"e":"À Naples, au sud de l'Italie."},{"c":"geo","q":"Sur quel continent se trouve le désert de Gobi ?","o":["L'Asie","L'Afrique","L'Amérique du Sud"],"r":0,"e":"Entre la Chine et la Mongolie."},{"c":"geo","q":"Quelle est la capitale du Japon ?","o":["Tokyo","Kyoto","Osaka"],"r":0,"e":"Kyoto était la capitale impériale avant 1868."},{"c":"geo","q":"Quelle mer sépare l'Europe de l'Afrique ?","o":["La Méditerranée","La mer Noire","La mer Rouge"],"r":0,"e":"Elle touche trois continents."},{"c":"geo","q":"Quel est le plus long fleuve de France ?","o":["La Loire","La Seine","Le Rhône"],"r":0,"e":"Environ 1 000 km, d'est en ouest."},{"c":"geo","q":"Quel pays a la forme d'une botte ?","o":["L'Italie","Le Portugal","La Grèce"],"r":0,"e":"Sa péninsule descend vers la Méditerranée."},{"c":"geo","q":"Quelle est la capitale de l'Australie ?","o":["Canberra","Sydney","Melbourne"],"r":0,"e":"Canberra a été choisie en 1913, entre les deux rivales."},{"c":"geo","q":"Quel océan borde Mayotte ?","o":["L'océan Indien","L'Atlantique","Le Pacifique"],"r":0,"e":"Entre Madagascar et la côte est de l'Afrique."},{"c":"geo","q":"Quelle chaîne de montagnes sépare la France de l'Espagne ?","o":["Les Pyrénées","Les Alpes","Le Jura"],"r":0,"e":"Environ 430 km, d'un océan à l'autre."},{"c":"his","q":"Qui a fait construire les grandes pyramides de Gizeh ?","o":["Les Égyptiens","Les Romains","Les Grecs"],"r":0,"e":"Il y a plus de 4 500 ans, pour les pharaons."},{"c":"his","q":"En quelle année a commencé la Révolution française ?","o":["1789","1799","1848"],"r":0,"e":"Avec la prise de la Bastille, le 14 juillet."},{"c":"his","q":"Qui a été le premier empereur des Français ?","o":["Napoléon Bonaparte","Louis XIV","Charlemagne"],"r":0,"e":"Sacré empereur en 1804."},{"c":"his","q":"Quel roi a fait agrandir le château de Versailles ?","o":["Louis XIV","Louis XVI","François Ier"],"r":0,"e":"Le Roi-Soleil y installe la cour en 1682."},{"c":"his","q":"En quelle année le mur de Berlin est-il tombé ?","o":["1989","1961","1991"],"r":0,"e":"Le 9 novembre 1989 : symbole de la fin de la Guerre froide."},{"c":"his","q":"Qui a inventé l'imprimerie en Europe ?","o":["Gutenberg","Galilée","Léonard de Vinci"],"r":0,"e":"Vers 1450 : les livres deviennent reproductibles."},{"c":"his","q":"Quel jour a eu lieu le débarquement en Normandie ?","o":["Le 6 juin 1944","Le 8 mai 1945","Le 11 novembre 1918"],"r":0,"e":"Le « Jour J », sur les plages normandes."},{"c":"his","q":"Contre qui Jeanne d'Arc a-t-elle combattu ?","o":["Les Anglais","Les Espagnols","Les Italiens"],"r":0,"e":"Pendant la guerre de Cent Ans."},{"c":"his","q":"Qui a été le premier président de la Ve République ?","o":["Charles de Gaulle","François Mitterrand","René Coty"],"r":0,"e":"Élu en 1958, après le retour au pouvoir."},{"c":"his","q":"En quelle année l'esclavage a-t-il été définitivement aboli en France ?","o":["1848","1789","1905"],"r":0,"e":"Sous l'impulsion de Victor Schœlcher."},{"c":"his","q":"Qui a atteint l'Amérique en 1492 ?","o":["Christophe Colomb","Magellan","Marco Polo"],"r":0,"e":"Il cherchait une route vers les Indes par l'ouest."},{"c":"his","q":"Quand la Seconde Guerre mondiale s'est-elle terminée en Europe ?","o":["Le 8 mai 1945","Le 11 novembre 1918","Le 6 juin 1944"],"r":0,"e":"Capitulation de l'Allemagne nazie."},{"c":"art","q":"Qui a écrit « Les Misérables » ?","o":["Victor Hugo","Émile Zola","Molière"],"r":0,"e":"Publié en 1862."},{"c":"art","q":"Qui a peint « La Joconde » ?","o":["Léonard de Vinci","Michel-Ange","Van Gogh"],"r":0,"e":"Exposée au musée du Louvre, à Paris."},{"c":"art","q":"Qui a écrit « Le Petit Prince » ?","o":["Antoine de Saint-Exupéry","Jules Verne","Marcel Pagnol"],"r":0,"e":"Écrit en 1943, à New York."},{"c":"art","q":"Qui a écrit « Les Trois Mousquetaires » ?","o":["Alexandre Dumas","Victor Hugo","Stendhal"],"r":0,"e":"D'Artagnan, Athos, Porthos et Aramis."},{"c":"art","q":"Qui a peint « Les Tournesols » ?","o":["Van Gogh","Monet","Picasso"],"r":0,"e":"Une série peinte à Arles en 1888-1889."},{"c":"art","q":"Qui a écrit la série « Harry Potter » ?","o":["J.K. Rowling","Tolkien","Roald Dahl"],"r":0,"e":"Sept tomes, à partir de 1997."},{"c":"art","q":"Qui a sculpté la statue de la Liberté ?","o":["Bartholdi","Rodin","Michel-Ange"],"r":0,"e":"Avec une structure interne conçue par Eiffel."},{"c":"art","q":"Qui a écrit « Le Corbeau et le Renard » ?","o":["Jean de La Fontaine","Charles Perrault","Molière"],"r":0,"e":"Une des Fables, publiées en 1668."},{"c":"art","q":"Quel musicien est devenu sourd et a continué à composer ?","o":["Beethoven","Mozart","Bach"],"r":0,"e":"Sa Neuvième Symphonie fut composée alors qu'il n'entendait plus."},{"c":"art","q":"Qui a écrit « Vingt Mille Lieues sous les mers » ?","o":["Jules Verne","Victor Hugo","Alexandre Dumas"],"r":0,"e":"Avec le capitaine Nemo et le Nautilus."},{"c":"art","q":"Quel peintre est le chef de file de l'impressionnisme ?","o":["Claude Monet","Pablo Picasso","Auguste Renoir"],"r":0,"e":"« Impression, soleil levant » a donné son nom au mouvement."},{"c":"art","q":"Qui a écrit « Cendrillon » et « Le Chat botté » ?","o":["Charles Perrault","Les frères Grimm","Andersen"],"r":0,"e":"Les Grimm les reprendront un siècle plus tard."},{"c":"sci","q":"Quelle est la planète la plus proche du Soleil ?","o":["Mercure","Vénus","Mars"],"r":0,"e":"Elle boucle son orbite en 88 jours."},{"c":"sci","q":"Quel gaz respirons-nous pour vivre ?","o":["L'oxygène","L'azote","Le dioxyde de carbone"],"r":0,"e":"Il représente environ 21 % de l'air."},{"c":"sci","q":"Combien d'os compte le corps d'un adulte ?","o":["206","106","306"],"r":0,"e":"Le bébé en a davantage : certains fusionnent en grandissant."},{"c":"sci","q":"Quel est le plus grand animal du monde ?","o":["La baleine bleue","L'éléphant","Le requin blanc"],"r":0,"e":"Jusqu'à 30 mètres de long."},{"c":"sci","q":"Quelle est la formule chimique de l'eau ?","o":["H₂O","CO₂","O₂"],"r":0,"e":"Deux atomes d'hydrogène, un d'oxygène."},{"c":"sci","q":"Quel organe pompe le sang dans le corps ?","o":["Le cœur","Le foie","Les poumons"],"r":0,"e":"Il bat environ 100 000 fois par jour."},{"c":"sci","q":"Quel est le plus grand désert chaud du monde ?","o":["Le Sahara","Le Gobi","L'Atacama"],"r":0,"e":"Plus de 9 millions de km² en Afrique."},{"c":"sci","q":"Quelle planète est célèbre pour ses anneaux ?","o":["Saturne","Jupiter","Neptune"],"r":0,"e":"Ils sont faits de glace et de roche."},{"c":"sci","q":"De quoi une plante a-t-elle besoin pour grandir ?","o":["D'eau et de lumière","De sucre","D'obscurité"],"r":0,"e":"Elle fabrique sa nourriture par photosynthèse."},{"c":"sci","q":"À quelle température l'eau bout-elle au niveau de la mer ?","o":["100 °C","50 °C","212 °C"],"r":0,"e":"212 °F, soit 100 °C."},{"c":"sci","q":"Combien de dents compte la dentition d'un adulte ?","o":["32","24","20"],"r":0,"e":"Dents de sagesse comprises."},{"c":"sci","q":"Quel mammifère vit dans la mer ?","o":["Le dauphin","Le requin","La pieuvre"],"r":0,"e":"Il allaite ses petits et respire par des poumons."},{"c":"spo","q":"Combien de joueurs compte une équipe de football sur le terrain ?","o":["11","10","12"],"r":0,"e":"Dix joueurs de champ et un gardien."},{"c":"spo","q":"Quel sport pratique Rafael Nadal ?","o":["Le tennis","Le golf","Le basket"],"r":0,"e":"Il est notamment recordman à Roland-Garros."},{"c":"spo","q":"Dans quelle ville se sont déroulés les Jeux olympiques d'été 2024 ?","o":["Paris","Tokyo","Los Angeles"],"r":0,"e":"Les troisièmes JO d'été à Paris, après 1900 et 1924."},{"c":"spo","q":"Combien de points vaut un essai au rugby ?","o":["5","3","7"],"r":0,"e":"S'y ajoute la transformation, qui vaut 2 points."},{"c":"spo","q":"Quel sport pratique-t-on dans un dojo ?","o":["Le judo","Le tennis","La natation"],"r":0,"e":"Sur un tatami, pieds nus."},{"c":"spo","q":"Quelle est la course cycliste la plus célèbre ?","o":["Le Tour de France","Paris-Roubaix","Le Giro"],"r":0,"e":"Créée en 1903."},{"c":"spo","q":"Combien de trous compte un parcours de golf classique ?","o":["18","9","24"],"r":0,"e":"Répartis en deux neufs."},{"c":"spo","q":"Quel sport se joue avec un ballon orange ?","o":["Le basket-ball","Le football","Le handball"],"r":0,"e":"Un panier vaut 2 ou 3 points."},{"c":"spo","q":"Quel sport se joue sur une table avec une petite raquette ?","o":["Le tennis de table","Le squash","Le badminton"],"r":0,"e":"Aussi appelé ping-pong."},{"c":"spo","q":"Dans quel pays le sumo est-il un sport national ?","o":["Le Japon","La Chine","La Corée"],"r":0,"e":"Avec ses lutteurs, les rikishi."},{"c":"spo","q":"Combien de joueurs d'une équipe de basket sont sur le terrain ?","o":["5","6","7"],"r":0,"e":"Cinq contre cinq."},{"c":"spo","q":"Quelle nage est la plus rapide ?","o":["Le crawl","La brasse","Le dos"],"r":0,"e":"C'est la nage utilisée dans les épreuves de vitesse."},{"c":"div","q":"Dans le jeu Zelda, comment s'appelle le héros ?","o":["Link","Zelda","Mario"],"r":0,"e":"Zelda est la princesse à secourir."},{"c":"div","q":"Quel personnage jaune mange des pac-gommes ?","o":["Pac-Man","Sonic","Kirby"],"r":0,"e":"Il fuit quatre fantômes colorés."},{"c":"div","q":"Quel est le festival de cinéma le plus célèbre au monde ?","o":["Cannes","Venise","Deauville"],"r":0,"e":"On y remet la Palme d'or."},{"c":"div","q":"Quel est le métier de Tintin ?","o":["Reporter","Détective","Pilote de ligne"],"r":0,"e":"Créé par Hergé en 1929."},{"c":"div","q":"Qui a créé Astérix et Obélix ?","o":["Goscinny et Uderzo","Hergé","Franquin"],"r":0,"e":"Première apparition en 1959."},{"c":"div","q":"Quel spectacle présente clowns et acrobates sous un chapiteau ?","o":["Le cirque","L'opéra","Le théâtre"],"r":0,"e":"Le chapiteau est sa tente caractéristique."},{"c":"div","q":"Quelle est la récompense la plus célèbre du cinéma américain ?","o":["L'Oscar","La Palme d'or","Le César"],"r":0,"e":"Décernée à Hollywood depuis 1929."},{"c":"div","q":"Dans quel jeu forme-t-on des mots avec des lettres ?","o":["Le Scrabble","Le Monopoly","Les petits chevaux"],"r":0,"e":"Chaque lettre a une valeur en points."},{"c":"div","q":"Quel personnage de Disney a de grandes oreilles rondes ?","o":["Mickey","Donald","Pluto"],"r":0,"e":"Créé en 1928."},{"c":"div","q":"Quelle est la date de la Fête de la musique ?","o":["Le 21 juin","Le 14 juillet","Le 1er mai"],"r":0,"e":"Créée en France en 1982."},{"c":"div","q":"Quel manga raconte l'histoire de jeunes ninjas ?","o":["Naruto","One Piece","Dragon Ball"],"r":0,"e":"Le héros rêve de devenir Hokage."},{"c":"div","q":"Combien de cases compte un damier de jeu de dames français ?","o":["100","64","144"],"r":0,"e":"Dix cases sur dix."}];
+
+const $ = s => document.querySelector(s);
+let game = {players:[], turn:0, curCat:null, q:null, answered:false};
+
+/* ---------- camembert ---------- */
+function polar(cx,cy,r,a){ const rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
+function wedgePart(cx,cy,r,a1,a2){
+  const [x1,y1]=polar(cx,cy,r,a1), [x2,y2]=polar(cx,cy,r,a2);
+  return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`;
+}
+function drawWheel(){
+  const p = game.players[game.turn];
+  const svg = $("#wheel");
+  let s = '';
+  CATS.forEach((c,i) => {
+    const a1 = i*60, a2 = (i+1)*60;
+    const won = p.parts.includes(c.id);
+    s += `<path d="${wedgePart(100,100,96,a1-1.4,a2+1.4)}" fill="${c.c}" fill-opacity="${won?1:0.16}" stroke="#1B2440" stroke-width="2.5"/>`;
+    const [tx,ty] = polar(100,100,62,(a1+a2)/2);
+    s += `<text x="${tx}" y="${ty+6}" text-anchor="middle" font-size="20" opacity="${won?1:1}">${c.e}</text>`;
+  });
+  s += `<circle cx="100" cy="100" r="26" fill="#fff" stroke="#1B2440" stroke-width="2.5"/>`;
+  s += `<text x="100" y="107" text-anchor="middle" font-size="17" font-weight="800" fill="#1B2440">${p.parts.length}/6</text>`;
+  svg.innerHTML = s;
+}
+
+/* ---------- setup ---------- */
+let nbPlayers = 2;
+function renderSetup(){
+  const p = $("#pcount"); p.innerHTML = "";
+  [1,2,3,4].forEach(n => {
+    const b = document.createElement("button");
+    b.textContent = n; b.className = n === nbPlayers ? "on" : "";
+    b.onclick = () => { nbPlayers = n; renderSetup(); };
+    p.appendChild(b);
+  });
+  const nm = $("#names"); nm.innerHTML = "";
+  const def = ["Joueur 1","Joueur 2","Joueur 3","Joueur 4"];
+  for(let i=0;i<nbPlayers;i++){
+    const inp = document.createElement("input");
+    inp.placeholder = def[i]; inp.maxLength = 12; inp.dataset.i = i;
+    nm.appendChild(inp);
+  }
+}
+$("#go").onclick = () => {
+  const inputs = [...document.querySelectorAll("#names input")];
+  game.players = inputs.map((inp,i) => ({name: (inp.value.trim() || "Joueur "+(i+1)), parts:[], hits:0}));
+  game.turn = 0; game.curCat = null; game.q = null;
+  show("v-game"); renderGame();
+};
+
+/* ---------- jeu ---------- */
+function show(id){
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id===id));
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function renderGame(){
+  const p = game.players[game.turn];
+  $("#who").textContent = "Au tour de " + p.name;
+  $("#sub").textContent = p.parts.length + " camembert" + (p.parts.length>1?"s":"") + " sur 6 · bonnes réponses : " + p.hits;
+  drawWheel();
+
+  const pl = $("#plist"); pl.innerHTML = "";
+  game.players.forEach((x,i) => {
+    const d = document.createElement("div");
+    d.className = "pl" + (i===game.turn?" act":"");
+    d.innerHTML = '<span class="n">'+x.name+'</span> <span>'+x.parts.length+'/6</span>';
+    pl.appendChild(d);
+  });
+
+  const cs = $("#cats"); cs.innerHTML = "";
+  CATS.forEach(c => {
+    const done = p.parts.includes(c.id);
+    const b = document.createElement("button");
+    b.className = "cat" + (done?" done":"");
+    b.style.setProperty("--c", c.c);
+    b.innerHTML = '<span class="e">'+c.e+'</span><span>'+c.n+(done?'<small>gagné ✓</small>':'<small>jouer</small>')+'</span>';
+    if(!done) b.onclick = () => askQuestion(c.id); 
+    cs.appendChild(b);
+  });
+  $("#qzone").innerHTML = "";
+}
+function askQuestion(catId){
+  const c = CATS.find(x => x.id === catId);
+  const pool = Q.filter(q => q.c === catId);
+  game.q = pool[Math.floor(Math.random()*pool.length)];
+  game.curCat = c; game.answered = false;
+  const zone = $("#qzone");
+  zone.innerHTML =
+    '<div class="qcard" style="--c:'+c.c+'">'+
+      '<span class="qcat" style="background:'+c.c+'">'+c.e+' '+c.n+'</span>'+
+      '<h2 class="qtext">'+game.q.q+'</h2>'+
+      '<div id="opts"></div>'+
+      '<div class="fb" id="fb"></div>'+
+      '<button class="next" id="next">Continuer →</button>'+
+    '</div>';
+  const o = $("#opts");
+  game.q.o.forEach((t,k) => {
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.innerHTML = '<span class="k">'+"ABC"[k]+'</span><span>'+t+'</span>';
+    b.onclick = () => answer(k);
+    o.appendChild(b);
+  });
+  zone.scrollIntoView({behavior:"smooth", block:"center"});
+}
+function answer(k){
+  if(game.answered) return;
+  game.answered = true;
+  const good = game.q.r;
+  const opts = [...document.querySelectorAll(".opt")];
+  opts.forEach((b,i) => { b.disabled = true; if(i===good) b.classList.add("ok"); if(i===k && k!==good) b.classList.add("ko"); });
+  const p = game.players[game.turn];
+  const fb = $("#fb");
+  if(k === good){
+    p.parts.push(game.curCat.id); p.hits++;
+    fb.className = "fb good on";
+    fb.innerHTML = "🎉 <b>Camembert gagné !</b> " + (game.q.e || "");
+  } else {
+    fb.className = "fb bad on";
+    fb.innerHTML = "❌ <b>Raté — la bonne réponse était :</b> " + game.q.o[good] + (game.q.e ? " — " + game.q.e : "");
+  }
+  const nx = $("#next");
+  nx.style.display = "block";
+  nx.onclick = () => {
+    const w = game.players.find(x => x.parts.length === 6);
+    if(w) return win(w);
+    game.turn = (game.turn + 1) % game.players.length;
+    renderGame();
+  };
+}
+function win(p){
+  show("v-win");
+  $("#winbox").innerHTML =
+    '<div class="trophy">🏆</div>'+
+    '<h2>'+p.name+' a les six camemberts !</h2>'+
+    '<p>'+p.hits+' bonnes réponses sur la partie.</p>'+
+    '<button class="play" id="again" style="max-width:280px;margin:0 auto">Rejouer 🔁</button>';
+  $("#again").onclick = () => { show("v-setup"); renderSetup(); };
+  confetti(120);
+}
+function confetti(n){
+  const box = $("#conf"); box.innerHTML = "";
+  const cols = ["#1E6FD9","#E8B31C","#A855F7","#22A06B","#F97316","#E8456B"];
+  for(let i=0;i<n;i++){
+    const c = document.createElement("i");
+    c.className = "cf";
+    c.style.left = Math.random()*100+"vw";
+    c.style.background = cols[Math.floor(Math.random()*cols.length)];
+    c.style.animationDuration = (1.6+Math.random()*1.8)+"s";
+    c.style.animationDelay = (Math.random()*0.6)+"s";
+    box.appendChild(c);
+  }
+  setTimeout(()=>box.innerHTML="", 4200);
+}
+
+renderSetup();
+</script>
+</body>
+</html>

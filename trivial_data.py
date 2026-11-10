@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+"""Trivial École — 72 questions de culture générale, 6 catégories × 12."""
+
+Q = []
+def q(c, qq, opts, r, e=""):
+    Q.append({"c":c, "q":qq, "o":opts, "r":r, "e":e})
+
+# ─────────── GÉOGRAPHIE ───────────
+q("geo","Quelle est la capitale du Canada ?",["Ottawa","Toronto","Montréal"],0,"Ottawa, même si Toronto est la plus grande ville du pays.")
+q("geo","Quel est le plus grand pays du monde par sa superficie ?",["La Russie","Le Canada","La Chine"],0,"Environ 17 millions de km², sur deux continents.")
+q("geo","Quel fleuve traverse Paris ?",["La Seine","La Loire","Le Rhône"],0,"La Seine, qui se jette dans la Manche au Havre.")
+q("geo","Dans quel pays la pizza est-elle née ?",["L'Italie","La Grèce","L'Espagne"],0,"À Naples, au sud de l'Italie.")
+q("geo","Sur quel continent se trouve le désert de Gobi ?",["L'Asie","L'Afrique","L'Amérique du Sud"],0,"Entre la Chine et la Mongolie.")
+q("geo","Quelle est la capitale du Japon ?",["Tokyo","Kyoto","Osaka"],0,"Kyoto était la capitale impériale avant 1868.")
+q("geo","Quelle mer sépare l'Europe de l'Afrique ?",["La Méditerranée","La mer Noire","La mer Rouge"],0,"Elle touche trois continents.")
+q("geo","Quel est le plus long fleuve de France ?",["La Loire","La Seine","Le Rhône"],0,"Environ 1 000 km, d'est en ouest.")
+q("geo","Quel pays a la forme d'une botte ?",["L'Italie","Le Portugal","La Grèce"],0,"Sa péninsule descend vers la Méditerranée.")
+q("geo","Quelle est la capitale de l'Australie ?",["Canberra","Sydney","Melbourne"],0,"Canberra a été choisie en 1913, entre les deux rivales.")
+q("geo","Quel océan borde Mayotte ?",["L'océan Indien","L'Atlantique","Le Pacifique"],0,"Entre Madagascar et la côte est de l'Afrique.")
+q("geo","Quelle chaîne de montagnes sépare la France de l'Espagne ?",["Les Pyrénées","Les Alpes","Le Jura"],0,"Environ 430 km, d'un océan à l'autre.")
+
+# ─────────── HISTOIRE ───────────
+q("his","Qui a fait construire les grandes pyramides de Gizeh ?",["Les Égyptiens","Les Romains","Les Grecs"],0,"Il y a plus de 4 500 ans, pour les pharaons.")
+q("his","En quelle année a commencé la Révolution française ?",["1789","1799","1848"],0,"Avec la prise de la Bastille, le 14 juillet.")
+q("his","Qui a été le premier empereur des Français ?",["Napoléon Bonaparte","Louis XIV","Charlemagne"],0,"Sacré empereur en 1804.")
+q("his","Quel roi a fait agrandir le château de Versailles ?",["Louis XIV","Louis XVI","François Ier"],0,"Le Roi-Soleil y installe la cour en 1682.")
+q("his","En quelle année le mur de Berlin est-il tombé ?",["1989","1961","1991"],0,"Le 9 novembre 1989 : symbole de la fin de la Guerre froide.")
+q("his","Qui a inventé l'imprimerie en Europe ?",["Gutenberg","Galilée","Léonard de Vinci"],0,"Vers 1450 : les livres deviennent reproductibles.")
+q("his","Quel jour a eu lieu le débarquement en Normandie ?",["Le 6 juin 1944","Le 8 mai 1945","Le 11 novembre 1918"],0,"Le « Jour J », sur les plages normandes.")
+q("his","Contre qui Jeanne d'Arc a-t-elle combattu ?",["Les Anglais","Les Espagnols","Les Italiens"],0,"Pendant la guerre de Cent Ans.")
+q("his","Qui a été le premier président de la Ve République ?",["Charles de Gaulle","François Mitterrand","René Coty"],0,"Élu en 1958, après le retour au pouvoir.")
+q("his","En quelle année l'esclavage a-t-il été définitivement aboli en France ?",["1848","1789","1905"],0,"Sous l'impulsion de Victor Schœlcher.")
+q("his","Qui a atteint l'Amérique en 1492 ?",["Christophe Colomb","Magellan","Marco Polo"],0,"Il cherchait une route vers les Indes par l'ouest.")
+q("his","Quand la Seconde Guerre mondiale s'est-elle terminée en Europe ?",["Le 8 mai 1945","Le 11 novembre 1918","Le 6 juin 1944"],0,"Capitulation de l'Allemagne nazie.")
+
+# ─────────── ARTS & LITTÉRATURE ───────────
+q("art","Qui a écrit « Les Misérables » ?",["Victor Hugo","Émile Zola","Molière"],0,"Publié en 1862.")
+q("art","Qui a peint « La Joconde » ?",["Léonard de Vinci","Michel-Ange","Van Gogh"],0,"Exposée au musée du Louvre, à Paris.")
+q("art","Qui a écrit « Le Petit Prince » ?",["Antoine de Saint-Exupéry","Jules Verne","Marcel Pagnol"],0,"Écrit en 1943, à New York.")
+q("art","Qui a écrit « Les Trois Mousquetaires » ?",["Alexandre Dumas","Victor Hugo","Stendhal"],0,"D'Artagnan, Athos, Porthos et Aramis.")
+q("art","Qui a peint « Les Tournesols » ?",["Van Gogh","Monet","Picasso"],0,"Une série peinte à Arles en 1888-1889.")
+q("art","Qui a écrit la série « Harry Potter » ?",["J.K. Rowling","Tolkien","Roald Dahl"],0,"Sept tomes, à partir de 1997.")
+q("art","Qui a sculpté la statue de la Liberté ?",["Bartholdi","Rodin","Michel-Ange"],0,"Avec une structure interne conçue par Eiffel.")
+q("art","Qui a écrit « Le Corbeau et le Renard » ?",["Jean de La Fontaine","Charles Perrault","Molière"],0,"Une des Fables, publiées en 1668.")
+q("art","Quel musicien est devenu sourd et a continué à composer ?",["Beethoven","Mozart","Bach"],0,"Sa Neuvième Symphonie fut composée alors qu'il n'entendait plus.")
+q("art","Qui a écrit « Vingt Mille Lieues sous les mers » ?",["Jules Verne","Victor Hugo","Alexandre Dumas"],0,"Avec le capitaine Nemo et le Nautilus.")
+q("art","Quel peintre est le chef de file de l'impressionnisme ?",["Claude Monet","Pablo Picasso","Auguste Renoir"],0,"« Impression, soleil levant » a donné son nom au mouvement.")
+q("art","Qui a écrit « Cendrillon » et « Le Chat botté » ?",["Charles Perrault","Les frères Grimm","Andersen"],0,"Les Grimm les reprendront un siècle plus tard.")
+
+# ─────────── SCIENCES & NATURE ───────────
+q("sci","Quelle est la planète la plus proche du Soleil ?",["Mercure","Vénus","Mars"],0,"Elle boucle son orbite en 88 jours.")
+q("sci","Quel gaz respirons-nous pour vivre ?",["L'oxygène","L'azote","Le dioxyde de carbone"],0,"Il représente environ 21 % de l'air.")
+q("sci","Combien d'os compte le corps d'un adulte ?",["206","106","306"],0,"Le bébé en a davantage : certains fusionnent en grandissant.")
+q("sci","Quel est le plus grand animal du monde ?",["La baleine bleue","L'éléphant","Le requin blanc"],0,"Jusqu'à 30 mètres de long.")
+q("sci","Quelle est la formule chimique de l'eau ?",["H₂O","CO₂","O₂"],0,"Deux atomes d'hydrogène, un d'oxygène.")
+q("sci","Quel organe pompe le sang dans le corps ?",["Le cœur","Le foie","Les poumons"],0,"Il bat environ 100 000 fois par jour.")
+q("sci","Quel est le plus grand désert chaud du monde ?",["Le Sahara","Le Gobi","L'Atacama"],0,"Plus de 9 millions de km² en Afrique.")
+q("sci","Quelle planète est célèbre pour ses anneaux ?",["Saturne","Jupiter","Neptune"],0,"Ils sont faits de glace et de roche.")
+q("sci","De quoi une plante a-t-elle besoin pour grandir ?",["D'eau et de lumière","De sucre","D'obscurité"],0,"Elle fabrique sa nourriture par photosynthèse.")
+q("sci","À quelle température l'eau bout-elle au niveau de la mer ?",["100 °C","50 °C","212 °C"],0,"212 °F, soit 100 °C.")
+q("sci","Combien de dents compte la dentition d'un adulte ?",["32","24","20"],0,"Dents de sagesse comprises.")
+q("sci","Quel mammifère vit dans la mer ?",["Le dauphin","Le requin","La pieuvre"],0,"Il allaite ses petits et respire par des poumons.")
+
+# ─────────── SPORTS & LOISIRS ───────────
+q("spo","Combien de joueurs compte une équipe de football sur le terrain ?",["11","10","12"],0,"Dix joueurs de champ et un gardien.")
+q("spo","Quel sport pratique Rafael Nadal ?",["Le tennis","Le golf","Le basket"],0,"Il est notamment recordman à Roland-Garros.")
+q("spo","Dans quelle ville se sont déroulés les Jeux olympiques d'été 2024 ?",["Paris","Tokyo","Los Angeles"],0,"Les troisièmes JO d'été à Paris, après 1900 et 1924.")
+q("spo","Combien de points vaut un essai au rugby ?",["5","3","7"],0,"S'y ajoute la transformation, qui vaut 2 points.")
+q("spo","Quel sport pratique-t-on dans un dojo ?",["Le judo","Le tennis","La natation"],0,"Sur un tatami, pieds nus.")
+q("spo","Quelle est la course cycliste la plus célèbre ?",["Le Tour de France","Paris-Roubaix","Le Giro"],0,"Créée en 1903.")
+q("spo","Combien de trous compte un parcours de golf classique ?",["18","9","24"],0,"Répartis en deux neufs.")
+q("spo","Quel sport se joue avec un ballon orange ?",["Le basket-ball","Le football","Le handball"],0,"Un panier vaut 2 ou 3 points.")
+q("spo","Quel sport se joue sur une table avec une petite raquette ?",["Le tennis de table","Le squash","Le badminton"],0,"Aussi appelé ping-pong.")
+q("spo","Dans quel pays le sumo est-il un sport national ?",["Le Japon","La Chine","La Corée"],0,"Avec ses lutteurs, les rikishi.")
+q("spo","Combien de joueurs d'une équipe de basket sont sur le terrain ?",["5","6","7"],0,"Cinq contre cinq.")
+q("spo","Quelle nage est la plus rapide ?",["Le crawl","La brasse","Le dos"],0,"C'est la nage utilisée dans les épreuves de vitesse.")
+
+# ─────────── DIVERTISSEMENTS ───────────
+q("div","Dans le jeu Zelda, comment s'appelle le héros ?",["Link","Zelda","Mario"],0,"Zelda est la princesse à secourir.")
+q("div","Quel personnage jaune mange des pac-gommes ?",["Pac-Man","Sonic","Kirby"],0,"Il fuit quatre fantômes colorés.")
+q("div","Quel est le festival de cinéma le plus célèbre au monde ?",["Cannes","Venise","Deauville"],0,"On y remet la Palme d'or.")
+q("div","Quel est le métier de Tintin ?",["Reporter","Détective","Pilote de ligne"],0,"Créé par Hergé en 1929.")
+q("div","Qui a créé Astérix et Obélix ?",["Goscinny et Uderzo","Hergé","Franquin"],0,"Première apparition en 1959.")
+q("div","Quel spectacle présente clowns et acrobates sous un chapiteau ?",["Le cirque","L'opéra","Le théâtre"],0,"Le chapiteau est sa tente caractéristique.")
+q("div","Quelle est la récompense la plus célèbre du cinéma américain ?",["L'Oscar","La Palme d'or","Le César"],0,"Décernée à Hollywood depuis 1929.")
+q("div","Dans quel jeu forme-t-on des mots avec des lettres ?",["Le Scrabble","Le Monopoly","Les petits chevaux"],0,"Chaque lettre a une valeur en points.")
+q("div","Quel personnage de Disney a de grandes oreilles rondes ?",["Mickey","Donald","Pluto"],0,"Créé en 1928.")
+q("div","Quelle est la date de la Fête de la musique ?",["Le 21 juin","Le 14 juillet","Le 1er mai"],0,"Créée en France en 1982.")
+q("div","Quel manga raconte l'histoire de jeunes ninjas ?",["Naruto","One Piece","Dragon Ball"],0,"Le héros rêve de devenir Hokage.")
+q("div","Combien de cases compte un damier de jeu de dames français ?",["100","64","144"],0,"Dix cases sur dix.")
