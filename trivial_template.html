@@ -3,121 +3,101 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trivial École — le jeu des questions générales</title>
-<meta name="description" content="Le Trivial Pursuit version école : 6 catégories, des questions de culture générale, de 1 à 4 joueurs. On passe le téléphone et on gagne ses camemberts.">
+<title>Trivial École — le plateau, le dé, les camemberts</title>
+<meta name="description" content="Le vrai Trivial Pursuit de l'école : un plateau, un dé, 6 catégories, 150 questions de culture générale. De 1 à 4 joueurs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#FFF9F0; --card:#FFFFFF; --ink:#1B2440; --ink2:#616C8A; --line:#EADFCB;
-  --geo:#1E6FD9; --his:#E8B31C; --art:#A855F7; --sci:#22A06B; --spo:#F97316; --div:#E8456B;
-}
+:root{--bg:#FFF9F0;--card:#FFFFFF;--ink:#1B2440;--ink2:#616C8A;--line:#EADFCB;
+  --geo:#1E6FD9;--his:#E8B31C;--art:#A855F7;--sci:#22A06B;--spo:#F97316;--div:#E8456B}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;
   background-image:radial-gradient(#00000009 1.2px,transparent 1.2px);background-size:26px 26px;-webkit-tap-highlight-color:transparent}
 button{font-family:inherit;cursor:pointer;border:none}
-.top{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:3px solid var(--ink);background:rgba(255,249,240,.95);position:sticky;top:0;z-index:20}
-.logo{display:flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;letter-spacing:-.03em}
-.logo .mk{width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--geo) 0 60deg,var(--his) 60deg 120deg,var(--art) 120deg 180deg,var(--sci) 180deg 240deg,var(--spo) 240deg 300deg,var(--div) 300deg 360deg);border:2px solid var(--ink)}
+.top{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:3px solid var(--ink);background:rgba(255,249,240,.95);position:sticky;top:0;z-index:20}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16px;letter-spacing:-.03em}
+.logo .mk{width:32px;height:32px;border-radius:50%;background:conic-gradient(var(--geo) 0 60deg,var(--his) 60deg 120deg,var(--art) 120deg 180deg,var(--sci) 180deg 240deg,var(--spo) 240deg 300deg,var(--div) 300deg 360deg);border:2px solid var(--ink)}
 .spacer{flex:1}
-main{max-width:940px;margin:0 auto;padding:18px 16px 60px}
+main{max-width:960px;margin:0 auto;padding:16px 14px 60px}
 .view{display:none}.view.on{display:block}
-
-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(26px,4.6vw,40px);letter-spacing:-.04em;line-height:1.03;margin:8px 0 0}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(25px,4.4vw,38px);letter-spacing:-.04em;line-height:1.04;margin:6px 0 0}
 h1 em{font-style:normal;background:linear-gradient(90deg,var(--geo),var(--art),var(--div));-webkit-background-clip:text;background-clip:text;color:transparent}
-p.lead{color:var(--ink2);font-size:15px;max-width:56ch;margin:12px 0 0}
-
-.setup{margin-top:22px;background:var(--card);border:3px solid var(--ink); border-radius:18px;padding:18px;box-shadow:5px 5px 0 var(--ink)}
-.setup h2{font-family:'Bricolage Grotesque',sans-serif;font-size:16px;margin:0 0 10px;letter-spacing:-.02em}
+p.lead{color:var(--ink2);font-size:14.5px;max-width:58ch;margin:10px 0 0}
+.setup{margin-top:18px;background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:16px;box-shadow:5px 5px 0 var(--ink)}
+.setup h2{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;margin:0 0 10px}
 .pcount{display:flex;gap:8px;flex-wrap:wrap}
-.pcount button{width:52px;height:52px;border-radius:13px;border:3px solid var(--ink);background:#FFF6E6;font-weight:800;font-size:18px;box-shadow:3px 3px 0 var(--ink)}
+.pcount button{width:50px;height:50px;border-radius:12px;border:3px solid var(--ink);background:#FFF6E6;font-weight:800;font-size:17px;box-shadow:3px 3px 0 var(--ink)}
 .pcount button.on{background:var(--ink);color:#fff}
-.names{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.names input{padding:10px 12px;border:3px solid var(--ink);border-radius:11px;font-family:inherit;font-size:14px;font-weight:600;background:#FFFCF6;width:100%}
-.play{margin-top:16px;width:100%;padding:16px;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:16px;box-shadow:0 5px 0 #0E1428}
+.names{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.names input{padding:10px;border:3px solid var(--ink);border-radius:11px;font-family:inherit;font-size:14px;font-weight:600;background:#FFFCF6;width:100%}
+.play{margin-top:14px;width:100%;padding:15px;border-radius:13px;background:var(--ink);color:#fff;font-weight:800;font-size:16px;box-shadow:0 5px 0 #0E1428}
 .play:active{transform:translateY(3px);box-shadow:0 2px 0 #0E1428}
 
 /* ---------- PLATEAU ---------- */
-.board{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center;margin:6px 0 14px}
-.wheel{width:230px;height:230px;flex:0 0 auto;filter:drop-shadow(0 6px 14px rgba(27,36,64,.18))}
-.turn{flex:1;min-width:220px}
-.turn .who{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;letter-spacing:-.02em}
-.turn .sub{color:var(--ink2);font-size:13px;font-weight:600;margin-top:2px}
-.players{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.pl{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.table{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+.boardwrap{position:relative;flex:0 0 auto;width:min(400px,86vw);margin:0 auto}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-top:8px;font-size:10.5px;font-weight:700;color:var(--ink2)}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink);flex:0 0 auto}
+svg.board{width:100%;height:auto;display:block}
+.side{flex:1;min-width:230px}
+.turnline{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--ink);flex:0 0 auto}
+.sub{color:var(--ink2);font-size:12.5px;font-weight:600;margin-top:3px}
+.dicebox{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.dice{width:64px;height:64px;border-radius:15px;border:3px solid var(--ink);background:#fff;display:grid;place-items:center;
+  font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;box-shadow:4px 4px 0 var(--ink);transition:transform .1s}
+.dice.roll{animation:shake .35s infinite}
+@keyframes shake{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+.rollbtn{padding:14px 20px;border-radius:13px;background:var(--gold,#F5A623);border:3px solid var(--ink);font-weight:800;font-size:15px;box-shadow:3px 3px 0 var(--ink)}
+.rollbtn:active{transform:translateY(2px);box-shadow:1px 1px 0 var(--ink)}
+.rollbtn:disabled{background:#E7DFCF;color:#8C94A8;box-shadow:none;cursor:default}
+.players{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.pl{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 9px;font-size:11.5px;font-weight:700}
 .pl.act{border-color:var(--ink);box-shadow:2px 2px 0 var(--ink);background:#FFFBEF}
-.pl .n{font-family:'Bricolage Grotesque',sans-serif}
-
-.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:6px}
-.cat{position:relative;display:flex;align-items:center;gap:9px;padding:13px 12px;border-radius:14px;border:3px solid var(--ink);
-  background:var(--c);color:#fff;font-weight:800;font-size:13.5px;text-align:left;box-shadow:3px 3px 0 var(--ink);transition:.12s}
-.cat:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
-.cat.done{background:#EEE7D8;color:#8C94A8;border-color:#C9C0AE;box-shadow:none;cursor:default}
-.cat .e{font-size:18px}
-.cat small{display:block;font-size:10px;font-weight:700;opacity:.85;letter-spacing:.06em;text-transform:uppercase}
 
 /* ---------- QUESTION ---------- */
-.qcard{background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:20px;box-shadow:5px 5px 0 var(--ink)}
-.qcat{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--c);padding:4px 11px;border-radius:99px}
-.qtext{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(19px,3.4vw,25px);line-height:1.24;letter-spacing:-.025em;margin:12px 0 16px}
-.opt{display:flex;align-items:center;gap:11px;width:100%;background:#FFF8E9;border:3px solid var(--ink);border-radius:13px;padding:13px 14px;
-  font-size:15px;font-weight:700;text-align:left;margin-bottom:9px;box-shadow:3px 3px 0 var(--ink)}
-.opt:hover{background:#FFF2DA}
-.opt .k{width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:0 0 auto}
+.qcard{margin-top:16px;background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:16px;box-shadow:5px 5px 0 var(--ink)}
+.qcat{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;padding:4px 10px;border-radius:99px}
+.qcount{float:right;font-size:10.5px;font-weight:700;color:var(--ink2)}
+.qtext{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(17px,3.2vw,23px);line-height:1.25;letter-spacing:-.02em;margin:10px 0 14px}
+.opt{display:flex;align-items:center;gap:10px;width:100%;background:#FFF8E9;border:3px solid var(--ink);border-radius:12px;padding:12px 13px;
+  font-size:14.5px;font-weight:700;text-align:left;margin-bottom:8px;box-shadow:3px 3px 0 var(--ink)}
+.opt:active{transform:translateY(2px);box-shadow:1px 1px 0 var(--ink)}
+.opt .k{width:25px;height:25px;border-radius:7px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:0 0 auto}
 .opt.ok{background:#DCFCE7;border-color:#15803D}.opt.ok .k{background:#15803D}
 .opt.ko{background:#FEE2E2;border-color:#B91C1C}.opt.ko .k{background:#B91C1C}
-.fb{margin-top:12px;padding:12px;border-radius:11px;font-size:14px;font-weight:600;display:none}
+.fb{margin-top:10px;padding:11px;border-radius:10px;font-size:13.5px;font-weight:600;display:none}
 .fb.on{display:block}
 .fb.good{background:#DCFCE7;border:2px solid #15803D;color:#14532D}
 .fb.bad{background:#FEE2E2;border:2px solid #B91C1C;color:#7F1D1D}
-.next{width:100%;margin-top:12px;padding:15px;border-radius:13px;background:var(--ink);color:#fff;font-weight:800;font-size:15px;box-shadow:0 5px 0 #0E1428;display:none}
+.next{width:100%;margin-top:10px;padding:14px;border-radius:12px;background:var(--ink);color:#fff;font-weight:800;font-size:14.5px;box-shadow:0 5px 0 #0E1428;display:none}
 .next:active{transform:translateY(3px);box-shadow:0 2px 0 #0E1428}
-
-.win{text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:28px 20px;box-shadow:5px 5px 0 var(--ink)}
-.win .trophy{font-size:60px}
-.win h2{font-family:'Bricolage Grotesque',sans-serif;font-size:26px;margin:8px 0 0;letter-spacing:-.03em}
-.win p{color:var(--ink2);font-weight:600;margin:8px 0 18px}
+.win{text-align:center;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:26px 18px;box-shadow:5px 5px 0 var(--ink)}
+.win .trophy{font-size:58px}
+.win h2{font-family:'Bricolage Grotesque',sans-serif;font-size:25px;margin:6px 0 0;letter-spacing:-.03em}
+.win p{color:var(--ink2);font-weight:600;margin:8px 0 16px}
 #conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:90}
 .cf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
-footer{text-align:center;color:#8A93A8;font-size:11.5px;padding:20px 16px 40px}
+footer{text-align:center;color:#8A93A8;font-size:11.5px;padding:18px 16px 40px}
 footer a{font-weight:700;border-bottom:2px solid var(--geo)}
-@media(max-width:620px){.wheel{width:180px;height:180px}.names{grid-template-columns:1fr}}
+@media(max-width:620px){.names{grid-template-columns:1fr}.table{display:block}.side{min-width:0}
+.boardwrap{width:min(300px,68vw)}}
 </style>
 </head>
 <body>
-<style>
-.tubebar{display:flex;gap:7px;overflow-x:auto;padding:9px 12px;background:#FFFDF7;border-bottom:2px solid #1B2440;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;font-family:Inter,system-ui,-apple-system,sans-serif;position:relative}
-.tubebar::-webkit-scrollbar{display:none}
-.tubebar a{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:7px 13px;border:2px solid #1B2440;border-radius:999px;
-  background:#fff;color:#1B2440;font-size:12.5px;font-weight:700;line-height:1;text-decoration:none;white-space:nowrap;
-  box-shadow:2px 2px 0 #1B2440;transition:transform .1s,box-shadow .1s}
-.tubebar a:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 #1B2440}
-.tubebar a:active{transform:translateY(2px);box-shadow:none}
-.tubebar a.on{background:#1B2440;color:#fff;box-shadow:2px 2px 0 #F5A623}
-.tubebar a.on .num{color:#F5A623}
-.tubebar .sep{flex:0 0 auto;width:1px;align-self:stretch;background:#E4DACA;margin:0 2px}
-.tubebar{position:relative}
-.tubebar .fade{position:absolute;right:0;top:0;bottom:0;width:36px;pointer-events:none;
-  background:linear-gradient(90deg,rgba(255,253,247,0),#FFFDF7 78%);border-radius:0}
-@media(max-width:620px){.tubebar{padding:8px 10px;gap:6px}.tubebar a{padding:6px 11px;font-size:11.5px}}
-</style>
-<nav class="tubebar" aria-label="Navigation entre les sites"><a href="https://hassanijacques-boop.github.io/tube/" title="l'ensemble des niveaux"><span class="num">🏠</span>Tous</a><span class="sep"></span><a href="https://hassanijacques-boop.github.io/ecoletube/" title="CP → CM2"><span class="num">🎒</span>École</a><a href="https://hassanijacques-boop.github.io/college-tube/" title="6e → 3e"><span class="num">🏫</span>Collège</a><a href="https://hassanijacques-boop.github.io/lycee-tube/" title="2de → Tle"><span class="num">🎓</span>Lycée</a><a href="https://hassanijacques-boop.github.io/bts-tube/" title="GME"><span class="num">💼</span>BTS</a><a href="https://hassanijacques-boop.github.io/reseaux-tube/" title="TSRS"><span class="num">🖧</span>Réseaux</a><a href="https://hassanijacques-boop.github.io/defi-ecole/" on aria-current="page" title="réviser en jouant"><span class="num">🎯</span>Défis</a><a href="https://hassanijacques-boop.github.io/defi-ecole/trivial.html" title="Le Trivial des questions générales"><span class="num">🎲</span>Trivial</a><span class="fade"></span></nav>
 
 <div class="top">
   <div class="logo"><span class="mk"></span><span>TRIVIAL ÉCOLE</span></div>
   <div class="spacer"></div>
-  <span style="font-size:12px;font-weight:800;color:var(--ink2);margin-right:6px">6 catégories · 72 questions</span><a href="https://hassanijacques-boop.github.io/ecoletube/" style="font-size:12.5px;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:5px 11px;background:#fff;text-decoration:none;color:var(--ink);margin-right:6px">📺 École Tube</a><a href="./" style="font-size:12.5px;font-weight:800;border:2px solid var(--ink);border-radius:999px;padding:5px 11px;background:#fff;text-decoration:none;color:var(--ink)">← Défis</a>
+  <span style="font-size:11.5px;font-weight:800;color:var(--ink2)">150 questions</span>
 </div>
 
 <main>
-
-<!-- ============ SETUP ============ -->
 <section class="view on" id="v-setup">
-  <h1>Six camemberts. <em>Et la meilleure mémoire.</em></h1>
-  <p class="lead">Le jeu des questions générales, version école : six catégories, une question par tour, et un camembert à compléter. De 1 à 4 joueurs — on se passe le téléphone.</p>
-
+  <h1>Le plateau, le dé. <em>Et les six camemberts.</em></h1>
+  <p class="lead">Tu lances le dé, ton pion avance, la case te donne la catégorie. Les six cases rondes du plateau te font gagner un camembert. Le premier à six a gagné.</p>
   <div class="setup">
     <h2>Combien de joueurs ?</h2>
     <div class="pcount" id="pcount"></div>
@@ -126,200 +106,198 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
   </div>
 </section>
 
-<!-- ============ JEU ============ -->
 <section class="view" id="v-game">
-  <div class="board">
-    <svg class="wheel" id="wheel" viewBox="0 0 200 200"></svg>
-    <div class="turn">
-      <div class="who" id="who"></div>
+  <div class="table">
+    <div class="boardwrap"><svg class="board" id="board" viewBox="0 0 340 340"></svg><div class="legend" id="legend"></div></div>
+    <div class="side">
+      <div class="turnline"><span class="dot" id="pdot"></span><span id="who"></span></div>
       <div class="sub" id="sub"></div>
+      <div class="dicebox">
+        <div class="dice" id="dice">🎲</div>
+        <button class="rollbtn" id="roll">Lancer le dé</button>
+      </div>
       <div class="players" id="plist"></div>
     </div>
   </div>
-  <div class="cats" id="cats"></div>
   <div id="qzone"></div>
 </section>
 
-<!-- ============ FIN ============ -->
-<section class="view" id="v-win">
-  <div class="win" id="winbox"></div>
-</section>
-
+<section class="view" id="v-win"><div class="win" id="winbox"></div></section>
 </main>
 
-<footer>
-  Trivial École — questions de culture générale, d'après le principe du Trivial Pursuit.<br>
-  Progression non enregistrée : une partie, un plaisir · <a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a>
-</footer>
+<footer>Trivial École — 150 questions de culture générale, niveau junior.<br><a href="https://hassanijacques-boop.github.io/tube/">Les Tube</a></footer>
 <div id="conf"></div>
 
 <script>
 const CATS = [
- {id:"geo", n:"Géographie", e:"🌍", c:"var(--geo)"},
- {id:"his", n:"Histoire", e:"🏛️", c:"var(--his)"},
- {id:"art", n:"Arts & Littérature", e:"🎨", c:"var(--art)"},
- {id:"sci", n:"Sciences & Nature", e:"🔬", c:"var(--sci)"},
- {id:"spo", n:"Sports & Loisirs", e:"⚽", c:"var(--spo)"},
- {id:"div", n:"Divertissements", e:"🎬", c:"var(--div)"},
+ {id:"geo", n:"Géographie", e:"🌍", c:"#1E6FD9"},
+ {id:"his", n:"Histoire", e:"🏛️", c:"#E8B31C"},
+ {id:"art", n:"Arts & Littérature", e:"🎨", c:"#A855F7"},
+ {id:"sci", n:"Sciences & Nature", e:"🔬", c:"#22A06B"},
+ {id:"spo", n:"Sports & Loisirs", e:"⚽", c:"#F97316"},
+ {id:"div", n:"Divertissements", e:"🎬", c:"#E8456B"},
 ];
-
 const Q = __QUESTIONS__;
+const PCOL = ["#E8456B","#1E6FD9","#22A06B","#A855F7"];
+const N = 24;                 // cases du plateau
+const CAMB = {0:"geo",4:"his",8:"art",12:"sci",16:"spo",20:"div"};
 
 const $ = s => document.querySelector(s);
-let game = {players:[], turn:0, curCat:null, q:null, answered:false};
-
-/* ---------- camembert ---------- */
-function polar(cx,cy,r,a){ const rad=(a-90)*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
-function wedgePart(cx,cy,r,a1,a2){
-  const [x1,y1]=polar(cx,cy,r,a1), [x2,y2]=polar(cx,cy,r,a2);
-  return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2} Z`;
-}
-function drawWheel(){
-  const p = game.players[game.turn];
-  const svg = $("#wheel");
-  let s = '';
-  CATS.forEach((c,i) => {
-    const a1 = i*60, a2 = (i+1)*60;
-    const won = p.parts.includes(c.id);
-    s += `<path d="${wedgePart(100,100,96,a1-1.4,a2+1.4)}" fill="${c.c}" fill-opacity="${won?1:0.16}" stroke="#1B2440" stroke-width="2.5"/>`;
-    const [tx,ty] = polar(100,100,62,(a1+a2)/2);
-    s += `<text x="${tx}" y="${ty+6}" text-anchor="middle" font-size="20" opacity="${won?1:1}">${c.e}</text>`;
-  });
-  s += `<circle cx="100" cy="100" r="26" fill="#fff" stroke="#1B2440" stroke-width="2.5"/>`;
-  s += `<text x="100" y="107" text-anchor="middle" font-size="17" font-weight="800" fill="#1B2440">${p.parts.length}/6</text>`;
-  svg.innerHTML = s;
-}
+let nbPlayers = 2;
+let G = {players:[], turn:0, phase:"roll", q:null, cat:null, used:new Set(), rolled:false};
 
 /* ---------- setup ---------- */
-let nbPlayers = 2;
 function renderSetup(){
-  const p = $("#pcount"); p.innerHTML = "";
-  [1,2,3,4].forEach(n => {
-    const b = document.createElement("button");
-    b.textContent = n; b.className = n === nbPlayers ? "on" : "";
-    b.onclick = () => { nbPlayers = n; renderSetup(); };
-    p.appendChild(b);
-  });
-  const nm = $("#names"); nm.innerHTML = "";
-  const def = ["Joueur 1","Joueur 2","Joueur 3","Joueur 4"];
-  for(let i=0;i<nbPlayers;i++){
-    const inp = document.createElement("input");
-    inp.placeholder = def[i]; inp.maxLength = 12; inp.dataset.i = i;
-    nm.appendChild(inp);
-  }
+  const p=$("#pcount"); p.innerHTML="";
+  [1,2,3,4].forEach(n=>{const b=document.createElement("button");b.textContent=n;b.className=n===nbPlayers?"on":"";
+    b.onclick=()=>{nbPlayers=n;renderSetup();};p.appendChild(b);});
+  const nm=$("#names"); nm.innerHTML="";
+  for(let i=0;i<nbPlayers;i++){const inp=document.createElement("input");
+    inp.placeholder="Joueur "+(i+1); inp.maxLength=12; nm.appendChild(inp);}
 }
-$("#go").onclick = () => {
-  const inputs = [...document.querySelectorAll("#names input")];
-  game.players = inputs.map((inp,i) => ({name: (inp.value.trim() || "Joueur "+(i+1)), parts:[], hits:0}));
-  game.turn = 0; game.curCat = null; game.q = null;
-  show("v-game"); renderGame();
+$("#go").onclick=()=>{
+  const ins=[...document.querySelectorAll("#names input")];
+  G.players=ins.map((x,i)=>({name:x.value.trim()||"Joueur "+(i+1),parts:[],pos:0,color:PCOL[i]}));
+  G.turn=0; G.phase="roll"; G.q=null; G.used=new Set();
+  show("v-game"); draw(); renderSide(); $("#qzone").innerHTML="";
 };
 
-/* ---------- jeu ---------- */
-function show(id){
-  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id===id));
-  window.scrollTo({top:0,behavior:"instant"});
+/* ---------- helpers ---------- */
+function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id===id));window.scrollTo({top:0,behavior:"instant"});}
+function catOf(pos){ return CAMB[pos] || CATS[pos % 6].id; }
+function isCamb(pos){ return !!CAMB[pos]; }
+function pickQ(cat){
+  let pool = Q.filter(q=>q.c===cat && !G.used.has(q));
+  if(pool.length===0){ Q.filter(q=>q.c===cat).forEach(q=>G.used.delete(q)); pool = Q.filter(q=>q.c===cat); }
+  const q = pool[Math.floor(Math.random()*pool.length)];
+  G.used.add(q); return q;
 }
-function renderGame(){
-  const p = game.players[game.turn];
-  $("#who").textContent = "Au tour de " + p.name;
-  $("#sub").textContent = p.parts.length + " camembert" + (p.parts.length>1?"s":"") + " sur 6 · bonnes réponses : " + p.hits;
-  drawWheel();
+function pol(cx,cy,r,a){const x=(a-90)*Math.PI/180;return [cx+r*Math.cos(x),cy+r*Math.sin(x)];}
 
-  const pl = $("#plist"); pl.innerHTML = "";
-  game.players.forEach((x,i) => {
-    const d = document.createElement("div");
-    d.className = "pl" + (i===game.turn?" act":"");
-    d.innerHTML = '<span class="n">'+x.name+'</span> <span>'+x.parts.length+'/6</span>';
+/* ---------- plateau ---------- */
+function draw(){
+  const svg=$("#board"); let s="";
+  s+=`<circle cx="170" cy="170" r="152" fill="#FFFDF6" stroke="#1B2440" stroke-width="3"/>`;
+  for(let i=0;i<N;i++){
+    const a=i*(360/N), [x,y]=pol(170,170,128,a);
+    const cam=isCamb(i), c=CATS.find(k=>k.id===catOf(i)).c;
+    s+=`<circle cx="${x}" cy="${y}" r="${cam?15:10}" fill="${c}" stroke="#1B2440" stroke-width="${cam?3:2}" ${cam?'stroke-dasharray="0"':''}/>`;
+    if(cam) s+=`<circle cx="${x}" cy="${y}" r="6" fill="#FFFDF6" stroke="#1B2440" stroke-width="1.5"/>`;
+  }
+  G.players.forEach((p,pi)=>{
+    const a=p.pos*(360/N), [x,y]=pol(170,170,128,a);
+    const off=(pi-(G.players.length-1)/2)*5.5;
+    s+=`<circle cx="${x+off}" cy="${y+off}" r="7.5" fill="${p.color}" stroke="#fff" stroke-width="2.5"/>`;
+    s+=`<text x="${x+off}" y="${y+off+3.5}" text-anchor="middle" font-size="8" font-weight="800" fill="#fff">${p.name.slice(0,1).toUpperCase()}</text>`;
+  });
+  svg.innerHTML=s;
+  const lg=$("#legend"); if(lg && !lg.innerHTML) lg.innerHTML=CATS.map(c=>'<span><i style="background:'+c.c+'"></i>'+c.n+'</span>').join('');
+}
+function renderSide(){
+  const p=G.players[G.turn];
+  $("#pdot").style.background=p.color;
+  $("#who").textContent="Au tour de "+p.name;
+  const nParts=p.parts.length;
+  $("#sub").textContent=nParts+"/6 camemberts · case "+(p.pos+1)+"/"+N;
+  const pl=$("#plist"); pl.innerHTML="";
+  G.players.forEach((x,i)=>{
+    const d=document.createElement("div"); d.className="pl"+(i===G.turn?" act":"");
+    d.innerHTML='<span class="dot" style="width:9px;height:9px;background:'+x.color+';border-width:1.5px"></span>'+x.name+' '+x.parts.length+'/6';
     pl.appendChild(d);
   });
-
-  const cs = $("#cats"); cs.innerHTML = "";
-  CATS.forEach(c => {
-    const done = p.parts.includes(c.id);
-    const b = document.createElement("button");
-    b.className = "cat" + (done?" done":"");
-    b.style.setProperty("--c", c.c);
-    b.innerHTML = '<span class="e">'+c.e+'</span><span>'+c.n+(done?'<small>gagné ✓</small>':'<small>jouer</small>')+'</span>';
-    if(!done) b.onclick = () => askQuestion(c.id); 
-    cs.appendChild(b);
-  });
-  $("#qzone").innerHTML = "";
+  $("#roll").disabled = G.phase!=="roll";
+  $("#roll").textContent = G.phase==="roll" ? "Lancer le dé 🎲" : "Question en cours…";
 }
-function askQuestion(catId){
-  const c = CATS.find(x => x.id === catId);
-  const pool = Q.filter(q => q.c === catId);
-  game.q = pool[Math.floor(Math.random()*pool.length)];
-  game.curCat = c; game.answered = false;
-  const zone = $("#qzone");
-  zone.innerHTML =
-    '<div class="qcard" style="--c:'+c.c+'">'+
+
+/* ---------- dé ---------- */
+$("#roll").onclick=()=>{
+  if(G.phase!=="roll") return;
+  const dice=$("#dice"); dice.classList.add("roll");
+  $("#roll").disabled=true;
+  let t=0;
+  const spin=setInterval(()=>{dice.textContent=1+Math.floor(Math.random()*6);t++;},70);
+  setTimeout(()=>{
+    clearInterval(spin); dice.classList.remove("roll");
+    const n=1+Math.floor(Math.random()*6);
+    dice.textContent=n;
+    const p=G.players[G.turn];
+    p.pos=(p.pos+n)%N;
+    draw(); renderSide();
+    setTimeout(()=>askQuestion(p.pos),260);
+  },720);
+};
+
+/* ---------- question ---------- */
+function askQuestion(pos){
+  const cat=catOf(pos), c=CATS.find(k=>k.id===cat);
+  G.cat=c; G.q=pickQ(cat); G.phase="q"; G.rolled=isCamb(pos);
+  renderSide();
+  const z=$("#qzone");
+  const total=Q.filter(q=>q.c===cat).length;
+  const deja=G.used.size;
+  z.innerHTML=
+    '<div class="qcard">'+
+      '<span class="qcount">'+c.n+(G.rolled?' · case camembert 🧀':'')+'</span>'+
       '<span class="qcat" style="background:'+c.c+'">'+c.e+' '+c.n+'</span>'+
-      '<h2 class="qtext">'+game.q.q+'</h2>'+
+      '<h2 class="qtext">'+G.q.q+'</h2>'+
       '<div id="opts"></div>'+
       '<div class="fb" id="fb"></div>'+
       '<button class="next" id="next">Continuer →</button>'+
     '</div>';
-  const o = $("#opts");
-  game.q.o.forEach((t,k) => {
-    const b = document.createElement("button");
-    b.className = "opt";
-    b.innerHTML = '<span class="k">'+"ABC"[k]+'</span><span>'+t+'</span>';
-    b.onclick = () => answer(k);
-    o.appendChild(b);
+  const o=$("#opts");
+  G.q.o.forEach((t,k)=>{
+    const b=document.createElement("button"); b.className="opt";
+    b.innerHTML='<span class="k">'+"ABC"[k]+'</span><span>'+t+'</span>';
+    b.onclick=()=>answer(k); o.appendChild(b);
   });
-  zone.scrollIntoView({behavior:"smooth", block:"center"});
+  z.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 function answer(k){
-  if(game.answered) return;
-  game.answered = true;
-  const good = game.q.r;
-  const opts = [...document.querySelectorAll(".opt")];
-  opts.forEach((b,i) => { b.disabled = true; if(i===good) b.classList.add("ok"); if(i===k && k!==good) b.classList.add("ko"); });
-  const p = game.players[game.turn];
-  const fb = $("#fb");
-  if(k === good){
-    p.parts.push(game.curCat.id); p.hits++;
-    fb.className = "fb good on";
-    fb.innerHTML = "🎉 <b>Camembert gagné !</b> " + (game.q.e || "");
+  const p=G.players[G.turn], good=G.q.r, cat=G.cat;
+  const opts=[...document.querySelectorAll(".opt")];
+  opts.forEach((b,i)=>{b.disabled=true;if(i===good)b.classList.add("ok");if(i===k&&k!==good)b.classList.add("ko");});
+  const fb=$("#fb"); let nextTurn=true, msg="";
+  if(k===good){
+    if(G.rolled && !p.parts.includes(cat)){
+      p.parts.push(cat); msg="🧀 <b>Camembert gagné !</b> ";
+      confetti(30);
+      if(p.parts.length===6){ return endGame(p); }
+    } else if(G.rolled){
+      msg="✅ <b>Bonne réponse</b> — camembert déjà gagné. ";
+    } else {
+      msg="✅ <b>Bonne réponse !</b> Tu rejoues. ";
+      nextTurn=false;
+    }
+    fb.className="fb good on"; fb.innerHTML=msg+(G.q.e||"");
   } else {
-    fb.className = "fb bad on";
-    fb.innerHTML = "❌ <b>Raté — la bonne réponse était :</b> " + game.q.o[good] + (game.q.e ? " — " + game.q.e : "");
+    fb.className="fb bad on";
+    fb.innerHTML="❌ <b>Raté.</b> La bonne réponse : <b>"+G.q.o[good]+"</b>"+(G.q.e?" — "+G.q.e:"");
   }
-  const nx = $("#next");
-  nx.style.display = "block";
-  nx.onclick = () => {
-    const w = game.players.find(x => x.parts.length === 6);
-    if(w) return win(w);
-    game.turn = (game.turn + 1) % game.players.length;
-    renderGame();
+  const nx=$("#next"); nx.style.display="block";
+  nx.textContent = nextTurn ? "Joueur suivant →" : "Relancer le dé 🎲";
+  nx.onclick=()=>{
+    if(nextTurn) G.turn=(G.turn+1)%G.players.length;
+    G.phase="roll"; $("#qzone").innerHTML="";
+    draw(); renderSide();
   };
 }
-function win(p){
+function endGame(p){
   show("v-win");
-  $("#winbox").innerHTML =
-    '<div class="trophy">🏆</div>'+
-    '<h2>'+p.name+' a les six camemberts !</h2>'+
-    '<p>'+p.hits+' bonnes réponses sur la partie.</p>'+
-    '<button class="play" id="again" style="max-width:280px;margin:0 auto">Rejouer 🔁</button>';
-  $("#again").onclick = () => { show("v-setup"); renderSetup(); };
-  confetti(120);
+  $("#winbox").innerHTML='<div class="trophy">🏆</div><h2>'+p.name+' a les six camemberts !</h2>'+
+    '<p>Partie terminée en '+G.used.size+' questions.</p>'+
+    '<button class="play" id="again" style="max-width:260px;margin:0 auto">Rejouer 🔁</button>';
+  $("#again").onclick=()=>{show("v-setup");renderSetup();};
+  confetti(130);
 }
 function confetti(n){
-  const box = $("#conf"); box.innerHTML = "";
-  const cols = ["#1E6FD9","#E8B31C","#A855F7","#22A06B","#F97316","#E8456B"];
-  for(let i=0;i<n;i++){
-    const c = document.createElement("i");
-    c.className = "cf";
-    c.style.left = Math.random()*100+"vw";
-    c.style.background = cols[Math.floor(Math.random()*cols.length)];
-    c.style.animationDuration = (1.6+Math.random()*1.8)+"s";
-    c.style.animationDelay = (Math.random()*0.6)+"s";
-    box.appendChild(c);
-  }
-  setTimeout(()=>box.innerHTML="", 4200);
+  const box=$("#conf"); box.innerHTML="";
+  const cols=["#1E6FD9","#E8B31C","#A855F7","#22A06B","#F97316","#E8456B"];
+  for(let i=0;i<n;i++){const c=document.createElement("i");c.className="cf";
+    c.style.left=Math.random()*100+"vw";c.style.background=cols[Math.floor(Math.random()*cols.length)];
+    c.style.animationDuration=(1.5+Math.random()*1.7)+"s";c.style.animationDelay=(Math.random()*0.5)+"s";
+    box.appendChild(c);}
+  setTimeout(()=>box.innerHTML="",4000);
 }
-
 renderSetup();
 </script>
 </body>
