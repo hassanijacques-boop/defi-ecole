@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Reconstruit trivial.html avec 4 paquets de questions."""
-import json, re, sys
+import json, re, sys, random, hashlib
 sys.path.insert(0, '/workspace/defi')
 import trivial_data as T1, trivial_data2 as T2, trivial_data3 as T3, trivial_data4 as T4
 import trivial_mayotte as TM, trivial_mayotte2 as TM2
 import trivial_histoire as TH, trivial_sciences as TS
+
+def shuffle_det(qq):
+    """Mélange les options de façon déterministe (stable, mais réparti)."""
+    seed = int(hashlib.md5(qq["q"].encode("utf-8")).hexdigest()[:8], 16)
+    idx = [0, 1, 2]
+    random.Random(seed).shuffle(idx)
+    qq["o"] = [qq["o"][i] for i in idx]
+    qq["r"] = idx.index(qq["r"])
+    return qq
 
 CAT6 = [
  {"id":"geo","n":"Géographie","e":"🌍","c":"#1E6FD9"},
@@ -58,8 +67,10 @@ new_js = open('/workspace/defi/trivial_paquets.js', encoding='utf-8').read()
 tpl = re.sub(r'<script>.*?</script>', '<script>\n' + new_js + '\n</script>', tpl, flags=re.S)
 
 # 3) injecter les données
-PAQ = [{"id":p["id"],"nom":p["nom"],"em":p["em"],"desc":p["desc"],"cats":p["cats"],
-        "q":[{"c":x["c"],"q":x["q"],"o":x["o"],"r":x["r"],"e":x.get("e","")} for x in p["q"]]} for p in PAQUETS]
+PAQ = []
+for p in PAQUETS:
+    qs = [shuffle_det({"c":x["c"],"q":x["q"],"o":list(x["o"]),"r":x["r"],"e":x.get("e","")}) for x in p["q"]]
+    PAQ.append({"id":p["id"],"nom":p["nom"],"em":p["em"],"desc":p["desc"],"cats":p["cats"],"q":qs})
 html = tpl.replace("__PAQUETS__", json.dumps(PAQ, ensure_ascii=False, separators=(",",":")))
 
 # conserver la barre de navigation
@@ -71,4 +82,8 @@ if m and 'class="tubebar"' not in html:
 open('/workspace/defi/trivial.html','w',encoding='utf-8').write(html)
 print("total questions:", sum(len(p["q"]) for p in PAQ))
 for p in PAQ: print(" -", p["nom"], ":", len(p["q"]), "questions,", len(p["cats"]), "catégories")
+from collections import Counter
+dist = Counter(x["r"] for p in PAQ for x in p["q"])
+tot = sum(dist.values())
+print("répartition des bonnes réponses:", {k: f"{v} ({round(100*v/tot)}%)" for k,v in sorted(dist.items())})
 print("taille:", len(html))
