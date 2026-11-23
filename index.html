@@ -151,6 +151,20 @@ footer a{font-weight:700;border-bottom:2px solid var(--gold)}
 </style>
 </head>
 <body>
+<script>
+/* verifie la version reellement servie — contourne le cache */
+(function(){
+  var LOCAL = "2026-11-10-a";
+  fetch("version.json?t="+Date.now(), {cache:"no-store"})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d && d.v && d.v !== LOCAL){
+        var u = location.pathname + "?v=" + encodeURIComponent(d.v);
+        location.replace(u);
+      }
+    }).catch(function(){});
+})();
+</script>
 <style>
 .tubebar{display:flex;gap:7px;overflow-x:auto;padding:9px 12px;background:#FFFDF7;border-bottom:2px solid #1B2440;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;font-family:Inter,system-ui,-apple-system,sans-serif;position:relative}
