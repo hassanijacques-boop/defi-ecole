@@ -85,8 +85,29 @@ footer a{font-weight:700;border-bottom:2px solid var(--geo)}
 @media(max-width:620px){.names{grid-template-columns:1fr}.table{display:block}.side{min-width:0}
 .boardwrap{width:min(300px,68vw)}}
 </style>
+<link rel="manifest" href="manifest.json">
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
 </head>
 <body>
+<script>
+(function(){
+  var LOCAL = "2026-11-10-c";
+  fetch("version.json?t="+Date.now(), {cache:"no-store"})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d && d.v && d.v !== LOCAL){
+        location.replace(location.pathname + "?v=" + encodeURIComponent(d.v));
+      }
+    }).catch(function(){});
+})();
+</script>
+
 <style>
 .tubebar{display:flex;gap:7px;overflow-x:auto;padding:9px 12px;background:#FFFDF7;border-bottom:2px solid #1B2440;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;font-family:Inter,system-ui,-apple-system,sans-serif;position:relative}

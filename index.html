@@ -149,12 +149,20 @@ footer a{font-weight:700;border-bottom:2px solid var(--gold)}
   .chip{padding:4px 8px}
 }
 </style>
+<link rel="manifest" href="manifest.json">
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
+</script>
 </head>
 <body>
 <script>
 /* verifie la version reellement servie — contourne le cache */
 (function(){
-  var LOCAL = "2026-11-10-b";
+  var LOCAL = "2026-11-10-c";
   fetch("version.json?t="+Date.now(), {cache:"no-store"})
     .then(function(r){return r.json();})
     .then(function(d){
