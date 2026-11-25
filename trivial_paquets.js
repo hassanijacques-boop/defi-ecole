@@ -118,7 +118,7 @@ function askQuestion(pos){
   const o=$("#opts");
   G.q.o.forEach((t,k)=>{
     const b=document.createElement("button"); b.className="opt";
-    b.innerHTML='<span class="k">'+"ABC"[k]+'</span><span>'+t+'</span>';
+    b.innerHTML='<span class="k">'+"ABCD"[k]+'</span><span>'+t+'</span>';
     b.onclick=()=>answer(k); o.appendChild(b);
   });
   z.scrollIntoView({behavior:"smooth",block:"nearest"});

@@ -162,10 +162,10 @@ q("div", "Quelle fête musulmane est très attendue à Mayotte ?",
   ["L'Aïd", "Noël", "Halloween"], 0,
   "L'Aïd el-Fitr (fin du Ramadan) et l'Aïd el-Kébir rassemblent les familles.")
 q("div", "Quel surnom donne-t-on à Mayotte ?",
-  ["L'île aux parfums", "L'île de la Réunion", "L'île aux trésors"], 0,
+  ["L'île aux parfums", "L'île de la Réunion", "L'île aux trésors", "L'île Maurice"], 0,
   "À cause de l'ylang-ylang et de la vanille, qui parfument l'air de l'île.")
 q("div", "Quel fruit à coque, très utilisé dans la cuisine mahoraise, pousse sur les palmiers ?",
-  ["La noix de coco", "La noisette", "La châtaigne"], 0,
+  ["La noix de coco", "La noisette", "La châtaigne", "L'amande"], 0,
   "Lait de coco dans le mataba, coco râpée dans les desserts : il est partout.")
 q("div", "Comment appelle-t-on les habitants de Mayotte ?",
   ["Les Mahorais", "Les Mahoréens", "Les Mahométans"], 0,

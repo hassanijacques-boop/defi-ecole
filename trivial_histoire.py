@@ -14,7 +14,7 @@ q("pre","Qui a fondé Marseille, vers 600 av. J.-C. ?",["Les Grecs","Les Phénic
 q("pre","Quel métal marque la fin de l'âge du fer ?",["Le fer, justement","Le bronze","L'or"],0,"D'où le nom de l'âge du fer.")
 q("pre","Quelle ville romaine s'appelait Lugdunum ?",["Lyon","Paris","Nîmes"],0,"Capitale des Gaules.")
 q("pre","Quel monument romain est encore debout à Nîmes ?",["Les arènes","Le Colisée","Le Parthénon"],0,"Un amphithéâtre de 24 000 places.")
-q("pre","Quel empereur romain a fait construire le pont du Gard ?",["Les Romains de l'Antiquité","Napoléon","Charlemagne"],0,"Un aqueduc pour alimenter Nîmes.")
+q("pre","Qui a construit le pont du Gard ?",["Les Romains","Les Gaulois","Les Grecs","Les Égyptiens"],0,"Un aqueduc romain pour alimenter Nîmes.")
 q("pre","Comment appelait-on Paris à l'époque romaine ?",["Lutèce","Massilia","Burdigala"],0,"Sur l'île de la Cité.")
 q("pre","Quel peuple a envahi la Gaule au Ve siècle ?",["Les Francs","Les Mongols","Les Arabes"],0,"Ils donnent leur nom à la France.")
 q("pre","Quelle arme était la plus utilisée par les Gaulois ?",["L'épée et le bouclier","Le fusil","L'arc long"],0,"Ils étaient réputés pour leur métallurgie.")
@@ -94,3 +94,5 @@ q("vin","En quelle année les femmes votent-elles pour la première fois ?",["19
 q("vin","Quel président a fait construire le Centre Pompidou ?",["Georges Pompidou","De Gaulle","Mitterrand"],0,"Inauguré en 1977.")
 q("vin","Quand la France adopte-t-elle l'euro ?",["2002","1992","2010"],0,"Les pièces et billets remplacent le franc.")
 q("vin","Quel événement de 1968 paralyse le pays ?",["Mai 68","La Commune","Les grèves de 1936"],0,"Étudiants et ouvriers dans la rue.")
+
+q("pre","Quel peuple a fondé Marseille ?",["Les Grecs","Les Romains","Les Phéniciens","Les Gaulois"],0,"Des marins venus de Phocée, vers 600 av. J.-C.")

@@ -154,7 +154,7 @@ footer a{font-weight:700;border-bottom:2px solid var(--gold)}
 <script>
 /* verifie la version reellement servie — contourne le cache */
 (function(){
-  var LOCAL = "2026-11-10-a";
+  var LOCAL = "2026-11-10-b";
   fetch("version.json?t="+Date.now(), {cache:"no-store"})
     .then(function(r){return r.json();})
     .then(function(d){
