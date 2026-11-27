@@ -23,6 +23,8 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+  // ne pas intercepter les URL versionnees (?v=) : elles doivent venir du reseau
+  if (url.search && url.search.includes("v=")) return;
 
   // version.json : toujours le reseau, sinon cache
   if (url.pathname.endsWith("version.json")) {

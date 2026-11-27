@@ -93,20 +93,26 @@ if ("serviceWorker" in navigator) {
   });
 }
 </script>
-</head>
-<body>
 <script>
 (function(){
-  var LOCAL = "2026-11-10-c";
-  fetch("version.json?t="+Date.now(), {cache:"no-store"})
-    .then(function(r){return r.json();})
+  var LOCAL = "2026-11-10-h";
+  var KEY = "ver_reload_defi";
+  var deja = parseInt(sessionStorage.getItem(KEY) || "0", 10);
+  fetch("version.json?t=" + Date.now(), {cache: "no-store"})
+    .then(function(r){ return r.json(); })
     .then(function(d){
-      if(d && d.v && d.v !== LOCAL){
+      if(d && d.v && d.v !== LOCAL && deja < 2){
+        sessionStorage.setItem(KEY, String(deja + 1));
         location.replace(location.pathname + "?v=" + encodeURIComponent(d.v));
+      } else if(d && d.v === LOCAL){
+        sessionStorage.removeItem(KEY);
       }
     }).catch(function(){});
 })();
 </script>
+</head>
+<body>
+
 
 <style>
 .tubebar{display:flex;gap:7px;overflow-x:auto;padding:9px 12px;background:#FFFDF7;border-bottom:2px solid #1B2440;
