@@ -2,9 +2,9 @@
 """Reconstruit index.html de Defi Ecole avec tous les defis."""
 import json, re, sys
 sys.path.insert(0, '/workspace/defi')
-import defis, defis2, defis3, defis4, defis5
+import defis, defis2, defis3, defis4, defis5, defis6, defis7
 
-D = defis.D + defis2.D2 + defis3.D3 + defis4.D4 + defis5.D5
+D = defis.D + defis2.D2 + defis3.D3 + defis4.D4 + defis5.D5 + defis6.D6 + defis7.D7
 BADGES = defis.BADGES + defis3.BADGES3
 
 # verifications
