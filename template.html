@@ -464,30 +464,31 @@ function checkBadges(){
   const add = id => { if(!st.badges.includes(id)){ st.badges.push(id); won.push(id); } };
   const played = Object.keys(st.stars).length;
   const totalD = DEFIS.length;
+  const pct = p => Math.max(2, Math.round(totalD * p / 100));
 
   if(played >= 1) add("first");
   if(Object.values(st.stars).some(v => v === 3)) { add("three"); add("perfect"); }
   const s = streakLen();
   if(s >= 3) add("streak3");
   if(s >= 7) add("streak7");
-  if(played >= 10) add("ten");
+  if(played >= pct(15)) add("ten");
   NIVEAUX.forEach(n => {
     const ds = defisOf(n.id);
     const need = Math.ceil(ds.length * 0.8);
     if(ds.filter(d => starsOf(d.id) === 3).length >= need) add(n.id);
   });
   const byMat = m => DEFIS.filter(d => d.m === m && starsOf(d.id) === 3).length;
-  if(byMat("Français") >= 3) add("lecture");
-  if(byMat("Maths") >= 3) add("calcul");
-  if(byMat("Histoire") >= 2) add("hist");
-  if(byMat("Sciences") >= 2 || byMat("Questionner le monde") >= 2) add("sci");
-  if(byMat("Anglais") >= 2) add("eng");
-  if(byMat("Découverte du monde") >= 2) add("curieux");
-  if(byMat("Arts") >= 2) add("artiste");
-  if(byMat("Culture") >= 2) add("culture");
-  if(Object.values(st.stars).filter(v => v === 3).length >= 5) add("sansfaute5");
-  if(st.xp >= 500) add("xp500");
-  if(st.xp >= 1500) add("xp1500");
+  if(byMat("Français") >= pct(4)) add("lecture");
+  if(byMat("Maths") >= pct(4)) add("calcul");
+  if(byMat("Histoire") >= pct(3)) add("hist");
+  if(byMat("Sciences") >= pct(3) || byMat("Questionner le monde") >= pct(3)) add("sci");
+  if(byMat("Anglais") >= pct(3)) add("eng");
+  if(byMat("Découverte du monde") >= pct(3)) add("curieux");
+  if(byMat("Arts") >= pct(2)) add("artiste");
+  if(byMat("Culture") >= pct(2)) add("culture");
+  if(Object.values(st.stars).filter(v => v === 3).length >= pct(8)) add("sansfaute5");
+  if(st.xp >= 8000) add("xp500");
+  if(st.xp >= 30000) add("xp1500");
   return won;
 }
 
